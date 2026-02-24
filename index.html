@@ -1,1061 +1,652 @@
 <!doctype html>
 <html lang="pt-BR" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Fisio Kids - Eulália Angelim</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-  <style>
-    * { font-family: 'Nunito', sans-serif; }
-    html { height: 100%; }
-    body { height: 100%; }
-    #app { height: 100%; }
-    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .card-shadow { box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2); }
-    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .btn-primary:hover { background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%); transform: scale(1.02); }
-    .age-tag { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-    .exercise-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(102, 126, 234, 0.25); }
-    .tab-active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-    .modal-overlay { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); }
-    .toast { animation: slideIn 0.3s ease-out; }
-    @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    .pulse-animation { animation: pulse 2s infinite; }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; }
-    .material-tag { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: #667eea; color: white; border-radius: 20px; font-size: 13px; font-weight: 600; }
-    .material-tag button { background: rgba(255,255,255,0.3); border: none; color: white; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-    .material-tag button:hover { background: rgba(255,255,255,0.5); }
-    .input-material { display: flex; gap: 8px; margin-bottom: 12px; }
-    .input-material input { flex: 1; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 14px; }
-    .input-material button { padding: 10px 16px; background: #667eea; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
-    .input-material button:hover { background: #5a6fd6; }
-    @media (max-width: 640px) {
-      .text-xl { font-size: 16px; }
-      input, select, textarea { font-size: 16px; }
-      button { padding: 12px 16px; }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Fisio Kids Pro - Dra. Eulália Angelim</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Nunito', 'Open Sans', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
+        .btn-primary { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border-radius: 16px; font-weight: 800; }
+        .btn-primary:hover { transform: scale(1.02); filter: brightness(1.1); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
+        .tab-active { color: #6366f1 !important; border-bottom: 4px solid #6366f1; transform: translateY(-2px); }
+        .input-search { padding-left: 45px !important; }
+        .lupa-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+        .image-container { overflow: hidden; border-radius: 24px; position: relative; }
+        .image-container img { transition: transform 0.5s ease; }
+        .image-container:hover img { transform: scale(1.08); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-slide { animation: slideIn 0.5s ease forwards; }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800">
+
+<div id="app" class="h-full flex flex-col">
+    <header class="gradient-bg text-white p-6 shadow-2xl z-30">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-5">
+                <div class="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center text-4xl shadow-inner border border-white/30">👶</div>
+                <div>
+                    <h1 class="text-3xl font-black tracking-tighter">Fisio Kids <span class="font-thin opacity-80 text-2xl">PRO</span></h1>
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] opacity-90">Dra. Eulália Angelim</p>
+                </div>
+            </div>
+            <div class="hidden md:flex flex-col items-end">
+                <span class="text-[10px] font-black bg-white/20 px-3 py-1 rounded-full uppercase">100% Offline & Local</span>
+                <span id="storage-info" class="text-[9px] opacity-70 mt-1 uppercase font-bold tracking-widest">Sincronizado</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-20 overflow-x-auto">
+        <div class="max-w-7xl mx-auto flex">
+            <button onclick="switchTab('exercises')" id="tab-exercises" class="tab-active flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400 hover:text-indigo-600 flex items-center justify-center gap-2">🏋️ EXERCÍCIOS</button>
+            <button onclick="switchTab('patients')" id="tab-patients" class="flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400 hover:text-indigo-600 flex items-center justify-center gap-2">👶 PACIENTES</button>
+            <button onclick="switchTab('prescriptions')" id="tab-prescriptions" class="flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400 hover:text-indigo-600 flex items-center justify-center gap-2">📋 PRESCRIÇÕES</button>
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-auto p-4 md:p-10">
+        <div class="max-w-7xl mx-auto">
+
+            <section id="section-exercises" class="animate-slide">
+                <div class="flex flex-col md:flex-row gap-6 mb-10 items-end">
+                    <div class="flex-1 w-full">
+                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase ml-2 tracking-widest">O que você procura?</label>
+                        <div class="relative">
+                            <span class="lupa-icon">🔍</span>
+                            <input type="text" id="search-ex" onkeyup="renderExercises()" placeholder="Pesquisar exercícios por nome ou coleção..." class="w-full h-16 bg-white rounded-2xl border-2 border-slate-100 px-12 focus:border-indigo-500 focus:ring-0 shadow-sm text-lg font-bold input-search">
+                        </div>
+                    </div>
+                    <button onclick="toggleForm('exercise-form-container')" class="h-16 px-8 btn-primary flex items-center gap-3">
+                        <span class="text-2xl">＋</span> NOVO EXERCÍCIO
+                    </button>
+                </div>
+
+                <div id="exercise-form-container" class="hidden bg-white rounded-[32px] card-shadow p-8 mb-10 border-2 border-indigo-50">
+                    <form id="exercise-form" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <input type="hidden" id="ex-id">
+                        <div class="md:col-span-2">
+                            <input type="text" id="ex-name" required placeholder="Nome do Exercício" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-1">
+                            <input type="text" id="ex-collection" required placeholder="Coleção (Ex: Motor)" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-1">
+                            <select id="ex-age" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold appearance-none">
+                                <option value="0-2">0-2 meses</option>
+                                <option value="3-4">3-4 meses</option>
+                                <option value="5-6">5-6 meses</option>
+                                <option value="7-8">7-8 meses</option>
+                                <option value="9-10">9-10 meses</option>
+                                <option value="11-12">11-12 meses</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <input type="url" id="ex-img" placeholder="Link da Imagem (URL)" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 md:col-span-2">
+                            <input type="text" id="ex-time" placeholder="Minutos" class="p-4 bg-slate-50 rounded-xl border-none font-bold text-center">
+                            <input type="text" id="ex-reps" placeholder="Reps" class="p-4 bg-slate-50 rounded-xl border-none font-bold text-center">
+                            <input type="text" id="ex-series" placeholder="Séries" class="p-4 bg-slate-50 rounded-xl border-none font-bold text-center">
+                        </div>
+                        <div class="md:col-span-4">
+                            <textarea id="ex-desc" required placeholder="Instruções detalhadas..." rows="3" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold"></textarea>
+                        </div>
+                        <div class="md:col-span-4 flex justify-end gap-4">
+                            <button type="button" onclick="toggleForm('exercise-form-container')" class="font-black text-slate-400 px-6">CANCELAR</button>
+                            <button type="submit" class="btn-primary px-12 py-4 shadow-xl">SALVAR AGORA</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="exercises-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </section>
+
+            <section id="section-patients" class="hidden animate-slide">
+                <div class="flex flex-col md:flex-row gap-6 mb-10 items-end">
+                    <div class="flex-1 w-full">
+                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase ml-2 tracking-widest">Buscar Pequeno(a)</label>
+                        <div class="relative">
+                            <span class="lupa-icon">🔍</span>
+                            <input type="text" id="search-pat" onkeyup="renderPatients()" placeholder="Nome ou Nº do paciente..." class="w-full h-16 bg-white rounded-2xl border-2 border-slate-100 px-12 shadow-sm text-lg font-bold input-search">
+                        </div>
+                    </div>
+                    <button onclick="toggleForm('patient-form-container')" class="h-16 px-8 btn-primary flex items-center gap-3">
+                        <span class="text-2xl">👶</span> NOVO PACIENTE
+                    </button>
+                </div>
+
+                <div id="patient-form-container" class="hidden bg-white rounded-[32px] card-shadow p-8 mb-10 border-2 border-pink-50">
+                    <form id="patient-form" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <input type="hidden" id="pat-id">
+                        <div class="md:col-span-2">
+                            <input type="text" id="pat-name" required placeholder="Nome do Bebê" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-1">
+                            <input type="text" id="pat-number" placeholder="Nº (Ex: 001)" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-1">
+                            <select id="pat-gender" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold appearance-none">
+                                <option value="Masculino">Menino 👦</option>
+                                <option value="Feminino">Menina 👧</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-1">
+                            <input type="date" id="pat-birth" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-3">
+                            <input type="text" id="pat-parent" required placeholder="Nome do Responsável" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-4">
+                            <input type="text" id="pat-diag" placeholder="Diagnóstico Clínico" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-4 flex justify-end gap-4">
+                            <button type="button" onclick="toggleForm('patient-form-container')" class="font-black text-slate-400 px-6">CANCELAR</button>
+                            <button type="submit" class="btn-primary px-12 py-4 shadow-xl">CADASTRAR</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="patients-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </section>
+
+            <section id="section-prescriptions" class="hidden animate-slide">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    <div class="lg:col-span-1 space-y-8">
+                        
+                        <div class="bg-white rounded-[32px] card-shadow p-8 border-2 border-indigo-50">
+                            <h3 class="text-xs font-black text-slate-400 mb-4 uppercase tracking-[0.2em]">1. Selecionar Paciente</h3>
+                            <div class="relative mb-6">
+                                <span class="lupa-icon">🔍</span>
+                                <input type="text" id="search-presc-pat" onkeyup="filterPrescPatients()" placeholder="Pesquisar por nome..." class="w-full h-14 bg-indigo-50/50 rounded-xl px-12 font-bold focus:ring-2 focus:ring-indigo-400 outline-none text-indigo-900 border-2 border-transparent focus:border-indigo-400 transition-all">
+                            </div>
+                            <div id="presc-patients-list" class="max-h-60 overflow-y-auto space-y-2 pr-2"></div>
+                            
+                            <div id="presc-selected-preview" class="mt-6 hidden p-6 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl shadow-lg text-white animate-slide"></div>
+                        </div>
+
+                        <div class="bg-white rounded-[32px] card-shadow p-8">
+                            <h3 class="text-xs font-black text-slate-400 mb-4 uppercase tracking-[0.2em]">2. Nota para a Família</h3>
+                            <textarea id="presc-obs" rows="4" class="w-full bg-slate-50 rounded-xl border-none p-4 font-bold" placeholder="Digite orientações gerais, recados ou o foco da semana..."></textarea>
+                        </div>
+
+                        <button onclick="generateSuperPDF()" class="w-full h-24 btn-primary rounded-[32px] text-xl shadow-2xl flex items-center justify-center gap-4 hover:scale-[1.03]">
+                            <span class="text-3xl">📄</span> GERAR PDF PREMIUM
+                        </button>
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 id="presc-filter-label" class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">3. Selecionar Exercícios</h3>
+                            <span id="presc-count" class="bg-indigo-600 text-white px-4 py-1 rounded-full text-[10px] font-black shadow-md">0 SELECIONADOS</span>
+                        </div>
+                        <div class="relative mb-6">
+                            <span class="lupa-icon">🔍</span>
+                            <input type="text" id="search-presc-ex" onkeyup="renderPrescExercises()" placeholder="Filtrar por nome ou coleção..." class="w-full h-14 bg-white rounded-xl px-12 font-bold shadow-sm border-2 border-slate-50 focus:border-indigo-400 outline-none">
+                        </div>
+                        <div id="presc-exercises-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[800px] overflow-y-auto pr-2 pb-10"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-10 py-5 bg-slate-900 text-white rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all z-50 font-black text-center"></div>
+</div>
+
+<script>
+    // --- DATABASE (LOCAL STORAGE) ---
+    let exercises = JSON.parse(localStorage.getItem('fk_pro_ex_v7') || '[]');
+    let patients = JSON.parse(localStorage.getItem('fk_pro_pat_v7') || '[]');
+    let selectedExIds = new Set();
+    let currentPrescPatientId = null;
+
+    // Migração de dados antigos se houver
+    if (patients.length === 0) {
+        let oldPats = JSON.parse(localStorage.getItem('fk_pro_pat_v6') || '[]');
+        if (oldPats.length > 0) { patients = oldPats; localStorage.setItem('fk_pro_pat_v7', JSON.stringify(patients)); }
     }
-  </style>
-  <style>body { box-sizing: border-box; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="h-full bg-gray-50 overflow-hidden">
-  <div id="app" class="h-full w-full flex flex-col overflow-hidden">
-   <!-- Header -->
-   <header class="gradient-bg text-white p-3 sm:p-4 shadow-lg flex-shrink-0">
-    <div class="flex items-center justify-between">
-     <div class="flex items-center gap-2 sm:gap-3">
-      <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-full flex items-center justify-center text-xl sm:text-2xl">
-       👶
-      </div>
-      <div class="min-w-0">
-       <h1 id="main-title" class="text-base sm:text-xl font-bold truncate">Fisio Kids</h1>
-       <p id="subtitle" class="text-xs sm:text-sm text-white/80 truncate">Dra. Eulália Angelim</p>
-      </div>
-     </div>
-     <div class="flex items-center gap-2"><span class="text-xs bg-white/20 px-2 sm:px-3 py-1 rounded-full">✨ v3.0</span>
-     </div>
-    </div>
-   </header><!-- Navigation Tabs -->
-   <nav class="bg-white shadow-sm border-b flex-shrink-0">
-    <div class="flex">
-     <button onclick="switchTab('exercises')" id="tab-exercises" class="tab-active flex-1 py-2 sm:py-3 px-2 sm:px-4 font-bold text-xs sm:text-sm transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2"> <span>🏋️</span> <span class="hidden sm:inline">Exercícios</span> </button> <button onclick="switchTab('patients')" id="tab-patients" class="flex-1 py-2 sm:py-3 px-2 sm:px-4 font-bold text-xs sm:text-sm text-gray-600 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2"> <span>👨‍👩‍👧</span> <span class="hidden sm:inline">Pacientes</span> </button> <button onclick="switchTab('prescriptions')" id="tab-prescriptions" class="flex-1 py-2 sm:py-3 px-2 sm:px-4 font-bold text-xs sm:text-sm text-gray-600 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center gap-1 sm:gap-2"> <span>📋</span> <span class="hidden sm:inline">Prescrições</span> </button>
-    </div>
-   </nav><!-- Main Content -->
-   <main class="flex-1 overflow-auto p-3 sm:p-4">
-    <div class="w-full max-w-6xl mx-auto">
-     <!-- Exercises Tab -->
-     <section id="section-exercises" class="space-y-4 sm:space-y-6">
-      <!-- Add Exercise Form -->
-      <div class="bg-white rounded-2xl card-shadow p-4 sm:p-6">
-       <h2 class="text-sm sm:text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center text-lg">➕</span> <span class="hidden sm:inline">Cadastrar Novo</span> <span class="sm:hidden">Novo Exercício</span></h2>
-       <form id="exercise-form" class="space-y-3 sm:space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Nome do Exercício *</label> <input type="text" id="ex-name" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="Ex: Rolar lateral">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Coleção *</label> <input type="text" id="ex-collection" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="Ex: Motor">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Faixa Etária *</label> <select id="ex-age-range" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm"> <option value="">Selecione...</option> <option value="0-3">0-3 meses</option> <option value="3-6">3-6 meses</option> <option value="6-9">6-9 meses</option> <option value="9-12">9-12 meses</option> <option value="12-18">12-18 meses</option> <option value="18-24">18-24 meses</option> <option value="24-36">2-3 anos</option> <option value="36-48">3-4 anos</option> <option value="48-60">4-5 anos</option> <option value="60+">5+ anos</option> </select>
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Tempo (min) *</label> <input type="number" id="ex-time" min="1" max="60" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="5">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Repetições</label> <input type="number" id="ex-reps" min="1" max="100" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="10">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Séries</label> <input type="number" id="ex-sets" min="1" max="10" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="3">
-         </div>
-        </div><!-- Materials Section -->
-        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-3 sm:p-4 border-2 border-blue-100">
-         <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-3">🎯 Materiais Necessários</label>
-         <div id="materials-list" class="flex flex-wrap gap-2 mb-3">
-          <!-- Materiais adicionados vão aqui -->
-         </div>
-         <div class="input-material">
-          <input type="text" id="material-input" placeholder="Ex: Bola, Tapete, Espelho..." class="text-sm"> <button type="button" onclick="addMaterial()" class="text-sm">Adicionar</button>
-         </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Dificuldade</label> <select id="ex-difficulty" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm"> <option value="facil">🟢 Fácil</option> <option value="medio">🟡 Médio</option> <option value="dificil">🔴 Difícil</option> </select>
-         </div>
-        </div>
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Descrição/Instruções *</label> <textarea id="ex-description" required rows="3" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm resize-none" placeholder="Como realizar o exercício..."></textarea>
-        </div>
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Benefícios</label> <textarea id="ex-benefits" rows="2" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm resize-none" placeholder="Benefícios deste exercício..."></textarea>
-        </div>
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Precauções</label> <textarea id="ex-precautions" rows="2" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm resize-none" placeholder="Cuidados especiais..."></textarea>
-        </div>
-        <div class="flex justify-end gap-2 pt-2"><button type="reset" class="px-4 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-colors flex items-center gap-1 text-sm sm:text-base">🗑️ Limpar</button> <button type="submit" class="btn-primary text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-1 text-sm sm:text-base">💾 Salvar</button>
-        </div>
-       </form>
-      </div><!-- Exercise Collections -->
-      <div class="bg-white rounded-2xl card-shadow p-4 sm:p-6">
-       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
-        <h2 class="text-sm sm:text-lg font-bold text-gray-800 flex items-center gap-2"><span class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center text-lg">📚</span> Coleções</h2><select id="filter-age" onchange="filterExercises()" class="w-full sm:w-auto px-3 sm:px-4 py-2 border-2 border-gray-200 rounded-xl text-xs sm:text-sm focus:border-purple-500 focus:outline-none"> <option value="">Todas as idades</option> <option value="0-3">0-3 meses</option> <option value="3-6">3-6 meses</option> <option value="6-9">6-9 meses</option> <option value="9-12">9-12 meses</option> <option value="12-18">12-18 meses</option> <option value="18-24">18-24 meses</option> <option value="24-36">2-3 anos</option> <option value="36-48">3-4 anos</option> <option value="48-60">4-5 anos</option> <option value="60+">5+ anos</option> </select>
-       </div>
-       <div id="collections-container" class="space-y-3 sm:space-y-4">
-        <p class="text-gray-500 text-center py-8 text-sm">Nenhum exercício cadastrado. Comece adicionando um! 🎯</p>
-       </div>
-      </div>
-     </section><!-- Patients Tab -->
-     <section id="section-patients" class="space-y-4 sm:space-y-6 hidden">
-      <!-- Add Patient Form -->
-      <div class="bg-white rounded-2xl card-shadow p-4 sm:p-6">
-       <h2 class="text-sm sm:text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center text-lg">👶</span> <span class="hidden sm:inline">Cadastrar Paciente</span> <span class="sm:hidden">Novo Paciente</span></h2>
-       <form id="patient-form" class="space-y-3 sm:space-y-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Nome do Bebê *</label> <input type="text" id="pat-baby-name" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="Nome completo">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Nascimento *</label> <input type="date" id="pat-birth-date" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Sexo</label> <select id="pat-gender" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm"> <option value="M">👦 Masculino</option> <option value="F">👧 Feminino</option> </select>
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Responsável *</label> <input type="text" id="pat-mother-name" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="Nome">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Telefone *</label> <input type="tel" id="pat-phone" required class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="(00) 00000-0000">
-         </div>
-         <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">E-mail</label> <input type="email" id="pat-email" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="email@exemplo.com">
-         </div>
-        </div>
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Endereço</label> <input type="text" id="pat-address" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm" placeholder="Rua, número, bairro, cidade">
-        </div>
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Diagnóstico</label> <textarea id="pat-diagnosis" rows="2" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm resize-none" placeholder="Diagnóstico..."></textarea>
-        </div>
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Observações</label> <textarea id="pat-notes" rows="2" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm resize-none" placeholder="Observações..."></textarea>
-        </div>
-        <div class="flex justify-end gap-2 pt-2"><button type="reset" class="px-4 sm:px-6 py-2.5 sm:py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-colors flex items-center gap-1 text-sm sm:text-base">🗑️ Limpar</button> <button type="submit" class="btn-primary text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-1 text-sm sm:text-base">👨‍👩‍👧 Cadastrar</button>
-        </div>
-       </form>
-      </div><!-- Patients List -->
-      <div class="bg-white rounded-2xl card-shadow p-4 sm:p-6">
-       <h2 class="text-sm sm:text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-lg">📋</span> Pacientes</h2>
-       <div id="patients-container" class="space-y-3">
-        <p class="text-gray-500 text-center py-8 text-sm">Nenhum paciente cadastrado. Adicione o primeiro! 👶</p>
-       </div>
-      </div>
-     </section><!-- Prescriptions Tab -->
-     <section id="section-prescriptions" class="space-y-4 sm:space-y-6 hidden">
-      <!-- Create Prescription -->
-      <div class="bg-white rounded-2xl card-shadow p-4 sm:p-6">
-       <h2 class="text-sm sm:text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center text-lg">📝</span> <span class="hidden sm:inline">Nova Prescrição</span> <span class="sm:hidden">Prescrição</span></h2>
-       <div class="space-y-4">
-        <!-- Patient Selection -->
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2">Selecionar Paciente *</label> <select id="prescription-patient" onchange="updateExercisesForPatient()" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm"> <option value="">Selecione...</option> </select>
-        </div><!-- Patient Info Card -->
-        <div id="patient-info-card" class="hidden bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border-2 border-purple-100">
-         <div class="flex items-center gap-3">
-          <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl" id="patient-avatar">
-           👶
-          </div>
-          <div>
-           <h3 id="selected-patient-name" class="font-bold text-gray-800"></h3>
-           <p id="selected-patient-age" class="text-xs sm:text-sm text-purple-600"></p>
-          </div>
-         </div>
-         <div class="mt-2 text-xs sm:text-sm text-gray-600 space-y-1">
-          <p><strong>Responsável:</strong> <span id="selected-patient-mother"></span></p>
-          <p><strong>Diagnóstico:</strong> <span id="selected-patient-diagnosis"></span></p>
-         </div>
-        </div><!-- Available Exercises -->
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2">Exercícios Disponíveis</label>
-         <div id="available-exercises" class="border-2 border-gray-200 rounded-xl p-3 max-h-64 overflow-y-auto bg-gray-50 space-y-2">
-          <p class="text-gray-500 text-center py-4 text-sm">Selecione um paciente</p>
-         </div>
-        </div><!-- Selected Exercises -->
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2">Selecionados</label>
-         <div id="selected-exercises" class="border-2 border-dashed border-purple-300 rounded-xl p-3 min-h-20 bg-purple-50 space-y-2">
-          <p class="text-purple-400 text-center py-4 text-xs sm:text-sm">Clique para adicionar</p>
-         </div>
-        </div><!-- Additional Notes -->
-        <div><label class="block text-xs sm:text-sm font-bold text-gray-700 mb-1.5">Observações</label> <textarea id="prescription-notes" rows="2" class="w-full px-3 sm:px-4 py-2.5 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none transition-colors text-sm resize-none" placeholder="Observações..."></textarea>
-        </div><!-- Actions -->
-        <div class="flex flex-wrap gap-2 justify-end pt-2"><button onclick="clearPrescription()" class="px-3 sm:px-4 py-2.5 sm:py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-colors flex items-center gap-1 text-xs sm:text-sm">🗑️ Limpar</button> <button onclick="savePrescription()" class="px-3 sm:px-4 py-2.5 sm:py-3 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-colors flex items-center gap-1 text-xs sm:text-sm shadow-lg">💾 Salvar</button> <button onclick="generatePDF()" class="btn-primary text-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm">📄 PDF</button>
-        </div>
-       </div>
-      </div><!-- Saved Prescriptions -->
-      <div class="bg-white rounded-2xl card-shadow p-4 sm:p-6">
-       <h2 class="text-sm sm:text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><span class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center text-lg">📚</span> Prescrições Salvas</h2>
-       <div id="prescriptions-container" class="space-y-3">
-        <p class="text-gray-500 text-center py-8 text-sm">Nenhuma prescrição salva. Crie a primeira! 📋</p>
-       </div>
-      </div>
-     </section>
-    </div>
-   </main><!-- Exercise Detail Modal -->
-   <div id="exercise-modal" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto card-shadow">
-     <div class="gradient-bg p-4 sm:p-6 rounded-t-2xl sticky top-0">
-      <div class="flex items-center justify-between">
-       <h3 id="modal-title" class="text-base sm:text-xl font-bold text-white flex-1 pr-4"></h3><button onclick="closeModal()" class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors flex-shrink-0">✕</button>
-      </div>
-     </div>
-     <div id="modal-content" class="p-4 sm:p-6"></div>
-    </div>
-   </div><!-- Toast Container -->
-   <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2 pointer-events-none"></div>
-  </div>
-  <script>
-    // Default configuration
-    const defaultConfig = {
-      app_title: 'Fisio Kids',
-      clinic_name: 'Dra. Eulália Angelim - Fisioterapia Infantil',
-      primary_color: '#667eea',
-      secondary_color: '#764ba2',
-      background_color: '#f9fafb',
-      text_color: '#1f2937',
-      accent_color: '#f093fb'
+    if (exercises.length === 0) {
+        let oldEx = JSON.parse(localStorage.getItem('fk_pro_ex_v6') || '[]');
+        if (oldEx.length > 0) { exercises = oldEx; localStorage.setItem('fk_pro_ex_v7', JSON.stringify(exercises)); }
+    }
+
+    // --- UTILS ---
+    function showToast(m) {
+        const t = document.getElementById('toast');
+        t.innerText = m; t.classList.remove('opacity-0');
+        setTimeout(() => t.classList.add('opacity-0'), 3000);
+    }
+
+    function toggleForm(id) {
+        document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function calculateAge(date) {
+        if(!date) return 0;
+        const birth = new Date(date);
+        const now = new Date();
+        let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+        if (now.getDate() < birth.getDate()) months--;
+        return Math.max(0, months);
+    }
+
+    function getAgeRange(months) {
+        if (months <= 2) return "0-2"; if (months <= 4) return "3-4"; if (months <= 6) return "5-6";
+        if (months <= 8) return "7-8"; if (months <= 10) return "9-10"; return "11-12";
+    }
+
+    function switchTab(t) {
+        ['exercises', 'patients', 'prescriptions'].forEach(s => {
+            document.getElementById(`section-${s}`).classList.toggle('hidden', s !== t);
+            document.getElementById(`tab-${s}`).classList.toggle('tab-active', s === t);
+        });
+        if(t === 'prescriptions') initPresc();
+    }
+
+    // --- EXERCÍCIOS ---
+    document.getElementById('exercise-form').onsubmit = (e) => {
+        e.preventDefault();
+        const id = document.getElementById('ex-id').value || Date.now().toString();
+        const data = {
+            id,
+            name: document.getElementById('ex-name').value,
+            collection: document.getElementById('ex-collection').value,
+            age: document.getElementById('ex-age').value,
+            time: document.getElementById('ex-time').value,
+            reps: document.getElementById('ex-reps').value,
+            series: document.getElementById('ex-series').value,
+            img: document.getElementById('ex-img').value,
+            desc: document.getElementById('ex-desc').value
+        };
+        const idx = exercises.findIndex(x => x.id === id);
+        if(idx > -1) exercises[idx] = data; else exercises.push(data);
+        localStorage.setItem('fk_pro_ex_v7', JSON.stringify(exercises));
+        e.target.reset(); document.getElementById('ex-id').value = ""; toggleForm('exercise-form-container');
+        renderExercises(); showToast('Exercício Gravado! 🏋️');
     };
 
-    let config = { ...defaultConfig };
-    let materialsBeingAdded = [];
-
-    // Initialize Element SDK
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange: async (newConfig) => {
-          config = { ...config, ...newConfig };
-          document.getElementById('main-title').textContent = config.app_title || defaultConfig.app_title;
-          document.getElementById('subtitle').textContent = config.clinic_name || defaultConfig.clinic_name;
-        },
-        mapToCapabilities: (cfg) => ({
-          recolorables: [
-            {
-              get: () => cfg.primary_color || defaultConfig.primary_color,
-              set: (v) => { cfg.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (cfg) => new Map([
-          ['app_title', cfg.app_title || defaultConfig.app_title],
-          ['clinic_name', cfg.clinic_name || defaultConfig.clinic_name]
-        ])
-      });
-    }
-
-    // Data Storage com proteção
-    function loadData(key) {
-      try {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : [];
-      } catch (e) {
-        console.error("Erro ao carregar " + key, e);
-        return [];
-      }
-    }
-
-    function saveData(key, data) {
-      try {
-        localStorage.setItem(key, JSON.stringify(data));
-        return true;
-      } catch (e) {
-        console.error("Erro ao salvar " + key, e);
-        showToast('Erro ao salvar dados!', 'error');
-        return false;
-      }
-    }
-
-    let exercises = loadData('fisio_exercises');
-    let patients = loadData('fisio_patients');
-    let prescriptions = loadData('fisio_prescriptions');
-    let selectedExercises = [];
-
-    // Tab Navigation
-    function switchTab(tab) {
-      const tabs = ['exercises', 'patients', 'prescriptions'];
-      tabs.forEach(t => {
-        document.getElementById(`section-${t}`).classList.toggle('hidden', t !== tab);
-        document.getElementById(`tab-${t}`).classList.toggle('tab-active', t === tab);
-        document.getElementById(`tab-${t}`).classList.toggle('text-gray-600', t !== tab);
-      });
-      if (tab === 'prescriptions') {
-        updatePatientDropdown();
-      }
-    }
-
-    // Toast Notifications
-    function showToast(message, type = 'success') {
-      const container = document.getElementById('toast-container');
-      const colors = {
-        success: 'bg-green-500',
-        error: 'bg-red-500',
-        info: 'bg-blue-500'
-      };
-      const icons = {
-        success: '✅',
-        error: '❌',
-        info: 'ℹ️'
-      };
-      const toast = document.createElement('div');
-      toast.className = `toast ${colors[type]} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2 text-sm sm:text-base pointer-events-auto`;
-      toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>`;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    // Material Management
-    function addMaterial() {
-      const input = document.getElementById('material-input');
-      const material = input.value.trim();
-      
-      if (!material) {
-        showToast('Digite um material!', 'error');
-        return;
-      }
-
-      if (materialsBeingAdded.includes(material)) {
-        showToast('Material já adicionado!', 'error');
-        return;
-      }
-
-      materialsBeingAdded.push(material);
-      input.value = '';
-      renderMaterials();
-      input.focus();
-    }
-
-    function removeMaterial(index) {
-      materialsBeingAdded.splice(index, 1);
-      renderMaterials();
-    }
-
-    function renderMaterials() {
-      const container = document.getElementById('materials-list');
-      if (materialsBeingAdded.length === 0) {
-        container.innerHTML = '';
-        return;
-      }
-
-      container.innerHTML = materialsBeingAdded.map((material, index) => `
-        <div class="material-tag">
-          ${material}
-          <button type="button" onclick="removeMaterial(${index})">✕</button>
-        </div>
-      `).join('');
-    }
-
-    // Age Range Helpers
-    function getAgeLabel(range) {
-      const labels = {
-        '0-3': '0-3 meses',
-        '3-6': '3-6 meses',
-        '6-9': '6-9 meses',
-        '9-12': '9-12 meses',
-        '12-18': '12-18 meses',
-        '18-24': '18-24 meses',
-        '24-36': '2-3 anos',
-        '36-48': '3-4 anos',
-        '48-60': '4-5 anos',
-        '60+': '5+ anos'
-      };
-      return labels[range] || range;
-    }
-
-    function getAgeInMonths(birthDate) {
-      const birth = new Date(birthDate);
-      const now = new Date();
-      const months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
-      return months;
-    }
-
-    function getAgeRangeFromMonths(months) {
-      if (months < 3) return '0-3';
-      if (months < 6) return '3-6';
-      if (months < 9) return '6-9';
-      if (months < 12) return '9-12';
-      if (months < 18) return '12-18';
-      if (months < 24) return '18-24';
-      if (months < 36) return '24-36';
-      if (months < 48) return '36-48';
-      if (months < 60) return '48-60';
-      return '60+';
-    }
-
-    function formatAge(birthDate) {
-      const months = getAgeInMonths(birthDate);
-      if (months < 12) {
-        return `${months} ${months === 1 ? 'mês' : 'meses'}`;
-      } else {
-        const years = Math.floor(months / 12);
-        const remainingMonths = months % 12;
-        if (remainingMonths === 0) {
-          return `${years} ${years === 1 ? 'ano' : 'anos'}`;
-        }
-        return `${years} ${years === 1 ? 'ano' : 'anos'} e ${remainingMonths} ${remainingMonths === 1 ? 'mês' : 'meses'}`;
-      }
-    }
-
-    // Exercise Management
-    document.getElementById('exercise-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const exercise = {
-        id: Date.now().toString(),
-        name: document.getElementById('ex-name').value,
-        collection: document.getElementById('ex-collection').value,
-        ageRange: document.getElementById('ex-age-range').value,
-        time: document.getElementById('ex-time').value || '5',
-        reps: document.getElementById('ex-reps').value || '10',
-        sets: document.getElementById('ex-sets').value || '3',
-        materials: [...materialsBeingAdded],
-        difficulty: document.getElementById('ex-difficulty').value,
-        description: document.getElementById('ex-description').value,
-        benefits: document.getElementById('ex-benefits').value,
-        precautions: document.getElementById('ex-precautions').value,
-        createdAt: new Date().toISOString()
-      };
-      exercises.push(exercise);
-      saveData('fisio_exercises', exercises);
-      this.reset();
-      materialsBeingAdded = [];
-      renderMaterials();
-      renderExercises();
-      showToast('Exercício cadastrado!');
-    });
-
     function renderExercises() {
-      const container = document.getElementById('collections-container');
-      const filterAge = document.getElementById('filter-age').value;
-      
-      let filtered = exercises;
-      if (filterAge) {
-        filtered = exercises.filter(ex => ex.ageRange === filterAge);
-      }
+        const query = document.getElementById('search-ex').value.toLowerCase();
+        const list = document.getElementById('exercises-list');
+        const filtered = exercises.filter(ex => 
+            ex.name.toLowerCase().includes(query) || ex.collection.toLowerCase().includes(query)
+        );
 
-      if (filtered.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-8 text-sm">Nenhum exercício encontrado. 🎯</p>';
-        return;
-      }
-
-      // Group by collection
-      const collections = {};
-      filtered.forEach(ex => {
-        if (!collections[ex.collection]) {
-          collections[ex.collection] = [];
-        }
-        collections[ex.collection].push(ex);
-      });
-
-      container.innerHTML = Object.entries(collections).map(([collectionName, exList]) => `
-        <div class="border-2 border-gray-100 rounded-xl overflow-hidden">
-          <div class="bg-gradient-to-r from-purple-500 to-pink-500 px-4 py-2.5 sm:py-3 flex items-center justify-between">
-            <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
-              <span>📁</span> ${collectionName}
-              <span class="bg-white/20 px-2 py-0.5 rounded-full text-xs sm:text-sm">${exList.length}</span>
-            </h3>
-          </div>
-          <div class="p-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            ${exList.map(ex => `
-              <div class="exercise-card bg-white border-2 border-gray-100 rounded-xl p-3 sm:p-4 cursor-pointer transition-all duration-300" onclick="showExerciseDetail('${ex.id}')">
-                <div class="flex items-start justify-between mb-2">
-                  <h4 class="font-bold text-gray-800 text-sm sm:text-base flex-1">${ex.name}</h4>
-                  <span class="age-tag text-white text-xs px-2 py-1 rounded-full flex-shrink-0">${getAgeLabel(ex.ageRange).split(' ')[0]}</span>
+        list.innerHTML = filtered.map(ex => `
+            <div class="bg-white rounded-[40px] p-6 card-shadow border border-slate-50 group hover:border-indigo-200 animate-slide flex flex-col h-full">
+                <div class="image-container mb-6 h-48 bg-slate-100 shrink-0">
+                    <img src="${ex.img || 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=600'}" class="w-full h-full object-cover">
                 </div>
-                <p class="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-2">${ex.description}</p>
-                <div class="flex flex-wrap gap-1 mb-2">
-                  <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs">⏱️ ${ex.time}m</span>
-                  <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs">🔄 ${ex.reps}x${ex.sets}</span>
+                <div class="flex justify-between items-start mb-3">
+                    <span class="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">${ex.age} meses</span>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">${ex.collection}</span>
                 </div>
-                ${ex.materials.length > 0 ? `<p class="text-xs text-purple-600 mb-2">🎯 ${ex.materials.length} material${ex.materials.length > 1 ? 's' : ''}</p>` : ''}
-                <div class="flex justify-between items-center pt-2 border-t border-gray-100">
-                  <span class="text-xs font-semibold bg-${ex.difficulty === 'facil' ? 'green' : ex.difficulty === 'medio' ? 'yellow' : 'red'}-100 text-${ex.difficulty === 'facil' ? 'green' : ex.difficulty === 'medio' ? 'yellow' : 'red'}-700 px-2 py-0.5 rounded">
-                    ${ex.difficulty === 'facil' ? '🟢' : ex.difficulty === 'medio' ? '🟡' : '🔴'} ${ex.difficulty}
-                  </span>
-                  <button onclick="event.stopPropagation(); deleteExercise('${ex.id}')" class="text-red-500 hover:text-red-700 font-bold text-sm">🗑️</button>
+                <h4 class="text-xl font-black text-slate-800 leading-tight mb-4 flex-1">${ex.name}</h4>
+                <div class="flex gap-2 border-t pt-5 mt-auto">
+                    <button onclick="editEx('${ex.id}')" class="flex-1 h-12 rounded-2xl bg-slate-50 font-black text-slate-400 hover:bg-indigo-600 hover:text-white">EDITAR</button>
+                    <button onclick="deleteEx('${ex.id}')" class="w-12 h-12 flex items-center justify-center text-slate-200 hover:text-red-500 bg-slate-50 rounded-2xl">🗑️</button>
                 </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `).join('');
+            </div>
+        `).join('');
     }
 
-    function filterExercises() {
-      renderExercises();
+    function editEx(id) {
+        const ex = exercises.find(x => x.id === id);
+        Object.keys(ex).forEach(k => { if(document.getElementById(`ex-${k}`)) document.getElementById(`ex-${k}`).value = ex[k]; });
+        document.getElementById('exercise-form-container').classList.remove('hidden');
+        window.scrollTo({top:0, behavior:'smooth'});
     }
 
-    function showExerciseDetail(id) {
-      const ex = exercises.find(e => e.id === id);
-      if (!ex) return;
+    function deleteEx(id) { if(confirm('Excluir exercício permanentemente?')) { exercises = exercises.filter(x => x.id !== id); localStorage.setItem('fk_pro_ex_v7', JSON.stringify(exercises)); renderExercises(); } }
 
-      document.getElementById('modal-title').textContent = ex.name;
-      document.getElementById('modal-content').innerHTML = `
-        <div class="space-y-4">
-          <div class="flex flex-wrap gap-2">
-            <span class="age-tag text-white px-3 py-1 rounded-full font-bold text-xs sm:text-sm">${getAgeLabel(ex.ageRange)}</span>
-            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-bold text-xs sm:text-sm">📁 ${ex.collection}</span>
-            <span class="bg-${ex.difficulty === 'facil' ? 'green' : ex.difficulty === 'medio' ? 'yellow' : 'red'}-100 text-${ex.difficulty === 'facil' ? 'green' : ex.difficulty === 'medio' ? 'yellow' : 'red'}-700 px-3 py-1 rounded-full font-bold text-xs sm:text-sm">
-              ${ex.difficulty === 'facil' ? '🟢 Fácil' : ex.difficulty === 'medio' ? '🟡 Médio' : '🔴 Difícil'}
-            </span>
-          </div>
-          
-          <div class="grid grid-cols-3 gap-2 bg-gray-50 rounded-xl p-3 sm:p-4">
-            <div class="text-center">
-              <div class="text-lg sm:text-2xl font-bold text-purple-600">${ex.time}</div>
-              <div class="text-xs text-gray-500">minutos</div>
-            </div>
-            <div class="text-center">
-              <div class="text-lg sm:text-2xl font-bold text-pink-600">${ex.reps}</div>
-              <div class="text-xs text-gray-500">repetições</div>
-            </div>
-            <div class="text-center">
-              <div class="text-lg sm:text-2xl font-bold text-indigo-600">${ex.sets}</div>
-              <div class="text-xs text-gray-500">séries</div>
-            </div>
-          </div>
-
-          ${ex.materials.length > 0 ? `
-            <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-3 sm:p-4">
-              <h4 class="font-bold text-yellow-800 mb-2 text-sm sm:text-base">🎯 Materiais (${ex.materials.length})</h4>
-              <div class="flex flex-wrap gap-2">
-                ${ex.materials.map(m => `<span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-xs sm:text-sm font-semibold">• ${m}</span>`).join('')}
-              </div>
-            </div>
-          ` : ''}
-
-          <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-3 sm:p-4">
-            <h4 class="font-bold text-blue-800 mb-2 text-sm sm:text-base">📝 Descrição</h4>
-            <p class="text-blue-700 text-sm whitespace-pre-line">${ex.description}</p>
-          </div>
-
-          ${ex.benefits ? `
-            <div class="bg-green-50 border-2 border-green-200 rounded-xl p-3 sm:p-4">
-              <h4 class="font-bold text-green-800 mb-2 text-sm sm:text-base">✨ Benefícios</h4>
-              <p class="text-green-700 text-sm">${ex.benefits}</p>
-            </div>
-          ` : ''}
-
-          ${ex.precautions ? `
-            <div class="bg-red-50 border-2 border-red-200 rounded-xl p-3 sm:p-4">
-              <h4 class="font-bold text-red-800 mb-2 text-sm sm:text-base">⚠️ Precauções</h4>
-              <p class="text-red-700 text-sm">${ex.precautions}</p>
-            </div>
-          ` : ''}
-        </div>
-      `;
-      document.getElementById('exercise-modal').classList.remove('hidden');
-    }
-
-    function closeModal() {
-      document.getElementById('exercise-modal').classList.add('hidden');
-    }
-
-    function deleteExercise(id) {
-      const exercise = exercises.find(e => e.id === id);
-      if (!exercise) return;
-      
-      const container = document.querySelector(`[onclick="event.stopPropagation(); deleteExercise('${id}')"]`);
-      if (container) {
-        container.innerHTML = `
-          <button onclick="event.stopPropagation(); confirmDeleteExercise('${id}')" class="text-red-600 font-bold text-xs hover:text-red-800">Confirmar?</button>
-          <button onclick="event.stopPropagation(); renderExercises()" class="text-gray-500 font-bold text-xs ml-1">Não</button>
-        `;
-      }
-    }
-
-    function confirmDeleteExercise(id) {
-      exercises = exercises.filter(e => e.id !== id);
-      saveData('fisio_exercises', exercises);
-      renderExercises();
-      showToast('Exercício excluído!', 'info');
-    }
-
-    // Patient Management
-    document.getElementById('patient-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const patient = {
-        id: Date.now().toString(),
-        babyName: document.getElementById('pat-baby-name').value,
-        birthDate: document.getElementById('pat-birth-date').value,
-        gender: document.getElementById('pat-gender').value,
-        motherName: document.getElementById('pat-mother-name').value,
-        phone: document.getElementById('pat-phone').value,
-        email: document.getElementById('pat-email').value,
-        address: document.getElementById('pat-address').value,
-        diagnosis: document.getElementById('pat-diagnosis').value,
-        notes: document.getElementById('pat-notes').value,
-        createdAt: new Date().toISOString()
-      };
-      patients.push(patient);
-      saveData('fisio_patients', patients);
-      this.reset();
-      renderPatients();
-      showToast('Paciente cadastrado!');
-    });
+    // --- PACIENTES ---
+    document.getElementById('patient-form').onsubmit = (e) => {
+        e.preventDefault();
+        const id = document.getElementById('pat-id').value || Date.now().toString();
+        const data = {
+            id,
+            name: document.getElementById('pat-name').value,
+            number: document.getElementById('pat-number').value || '---',
+            birth: document.getElementById('pat-birth').value,
+            gender: document.getElementById('pat-gender').value,
+            parent: document.getElementById('pat-parent').value,
+            diag: document.getElementById('pat-diag').value
+        };
+        const idx = patients.findIndex(p => p.id === id);
+        if(idx > -1) patients[idx] = data; else patients.push(data);
+        localStorage.setItem('fk_pro_pat_v7', JSON.stringify(patients));
+        e.target.reset(); toggleForm('patient-form-container'); renderPatients(); showToast('Pequeno(a) cadastrado! 👶');
+    };
 
     function renderPatients() {
-      const container = document.getElementById('patients-container');
-      
-      if (patients.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-8 text-sm">Nenhum paciente cadastrado. Adicione o primeiro! 👶</p>';
-        return;
-      }
+        const query = document.getElementById('search-pat').value.toLowerCase();
+        const list = document.getElementById('patients-list');
+        const filtered = patients.filter(p => p.name.toLowerCase().includes(query) || (p.number && p.number.toLowerCase().includes(query)));
 
-      container.innerHTML = patients.map(pat => `
-        <div class="border-2 border-gray-100 rounded-xl p-3 sm:p-4 hover:border-purple-200 transition-colors">
-          <div class="flex items-start justify-between gap-2 mb-2">
-            <div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-              <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-base sm:text-xl flex-shrink-0">
-                ${pat.gender === 'M' ? '👦' : '👧'}
-              </div>
-              <div class="min-w-0">
-                <h3 class="font-bold text-gray-800 text-sm sm:text-base truncate">${pat.babyName}</h3>
-                <p class="text-xs sm:text-sm text-purple-600">${formatAge(pat.birthDate)}</p>
-              </div>
-            </div>
-            <span class="age-tag text-white text-xs px-2 py-1 rounded-full flex-shrink-0">${getAgeLabel(getAgeRangeFromMonths(getAgeInMonths(pat.birthDate))).split(' ')[0]}</span>
-          </div>
-          <div class="grid grid-cols-1 gap-1 text-xs sm:text-sm mb-2">
-            <p><strong class="text-gray-600">Responsável:</strong> ${pat.motherName}</p>
-            <p><strong class="text-gray-600">Tel:</strong> ${pat.phone}</p>
-            ${pat.diagnosis ? `<p><strong class="text-gray-600">Diagnóstico:</strong> ${pat.diagnosis.substring(0, 40)}${pat.diagnosis.length > 40 ? '...' : ''}</p>` : ''}
-          </div>
-          <div class="flex justify-end gap-2 pt-2 border-t border-gray-100">
-            <button onclick="deletePatient('${pat.id}')" class="text-red-500 hover:text-red-700 font-bold text-xs sm:text-sm">🗑️ Excluir</button>
-          </div>
-        </div>
-      `).join('');
+        list.innerHTML = filtered.map(p => {
+            const m = calculateAge(p.birth);
+            return `
+                <div class="bg-white rounded-[32px] p-8 card-shadow border border-slate-50 flex flex-col items-center text-center animate-slide relative">
+                    <span class="absolute top-6 right-6 text-[10px] font-black bg-slate-100 text-slate-400 px-3 py-1 rounded-full">Nº ${p.number || '---'}</span>
+                    <div class="w-24 h-24 rounded-[32px] ${p.gender === 'Masculino' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-4xl mb-4 shadow-inner">
+                        ${p.gender === 'Masculino' ? '👦' : '👧'}
+                    </div>
+                    <h4 class="text-xl font-black text-slate-800 mb-1">${p.name}</h4>
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">${m} Meses • Faixa ${getAgeRange(m)}</span>
+                    <p class="text-xs font-bold text-slate-500 mb-6">${p.diag || 'Acompanhamento Geral'}</p>
+                    <div class="flex gap-2 w-full pt-4 border-t border-slate-50">
+                        <button onclick="editPat('${p.id}')" class="flex-1 py-3 bg-slate-50 rounded-xl font-black text-slate-400 hover:bg-slate-200">FICHA</button>
+                        <button onclick="deletePat('${p.id}')" class="px-4 py-3 text-slate-200 hover:text-red-500 bg-slate-50 rounded-xl">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
-    function deletePatient(id) {
-      const container = document.querySelector(`[onclick="deletePatient('${id}')"]`);
-      if (container) {
-        container.outerHTML = `
-          <button onclick="confirmDeletePatient('${id}')" class="text-red-600 font-bold text-xs hover:text-red-800">Confirmar?</button>
-          <button onclick="renderPatients()" class="text-gray-500 font-bold text-xs ml-1">Não</button>
-        `;
-      }
+    function editPat(id) {
+        const p = patients.find(x => x.id === id);
+        Object.keys(p).forEach(k => { if(document.getElementById(`pat-${k}`)) document.getElementById(`pat-${k}`).value = p[k]; });
+        document.getElementById('patient-form-container').classList.remove('hidden');
+        window.scrollTo({top:0, behavior:'smooth'});
     }
 
-    function confirmDeletePatient(id) {
-      patients = patients.filter(p => p.id !== id);
-      saveData('fisio_patients', patients);
-      renderPatients();
-      showToast('Paciente excluído!', 'info');
+    function deletePat(id) { if(confirm('Apagar paciente?')) { patients = patients.filter(p => p.id !== id); localStorage.setItem('fk_pro_pat_v7', JSON.stringify(patients)); renderPatients(); } }
+
+    // --- PRESCRIÇÃO DINÂMICA ---
+    function initPresc() {
+        filterPrescPatients();
+        renderPrescExercises();
+        updatePrescCount();
     }
 
-    // Prescription Management
-    function updatePatientDropdown() {
-      const select = document.getElementById('prescription-patient');
-      select.innerHTML = '<option value="">Selecione um paciente...</option>' +
-        patients.map(p => `<option value="${p.id}">${p.babyName} - ${formatAge(p.birthDate)}</option>`).join('');
-    }
-
-    function updateExercisesForPatient() {
-      const patientId = document.getElementById('prescription-patient').value;
-      const availableContainer = document.getElementById('available-exercises');
-      const patientInfoCard = document.getElementById('patient-info-card');
-
-      if (!patientId) {
-        availableContainer.innerHTML = '<p class="text-gray-500 text-center py-4 text-sm">Selecione um paciente</p>';
-        patientInfoCard.classList.add('hidden');
-        return;
-      }
-
-      const patient = patients.find(p => p.id === patientId);
-      if (!patient) return;
-
-      // Show patient info
-      patientInfoCard.classList.remove('hidden');
-      document.getElementById('patient-avatar').textContent = patient.gender === 'M' ? '👦' : '👧';
-      document.getElementById('selected-patient-name').textContent = patient.babyName;
-      document.getElementById('selected-patient-age').textContent = formatAge(patient.birthDate);
-      document.getElementById('selected-patient-mother').textContent = patient.motherName;
-      document.getElementById('selected-patient-diagnosis').textContent = patient.diagnosis || 'Não informado';
-
-      // Filter exercises by age range
-      const patientAgeRange = getAgeRangeFromMonths(getAgeInMonths(patient.birthDate));
-      const filteredExercises = exercises.filter(ex => ex.ageRange === patientAgeRange);
-
-      if (filteredExercises.length === 0) {
-        availableContainer.innerHTML = `<p class="text-gray-500 text-center py-4 text-sm">Nenhum exercício para ${getAgeLabel(patientAgeRange)}</p>`;
-        return;
-      }
-
-      availableContainer.innerHTML = filteredExercises.map(ex => `
-        <div class="exercise-item flex items-center gap-2 p-2.5 rounded-lg hover:bg-purple-100 cursor-pointer transition-colors bg-white border border-gray-100 ${selectedExercises.find(s => s.id === ex.id) ? 'border-purple-400 bg-purple-100' : ''}" onclick="toggleExerciseSelection('${ex.id}')">
-          <input type="checkbox" ${selectedExercises.find(s => s.id === ex.id) ? 'checked' : ''} class="w-4 h-4 accent-purple-600" onclick="event.stopPropagation()">
-          <div class="flex-1 min-w-0">
-            <p class="font-bold text-gray-800 text-xs sm:text-sm truncate">${ex.name}</p>
-            <p class="text-xs text-gray-500 truncate">${ex.collection} • ${ex.time}m • ${ex.reps}x${ex.sets}</p>
-          </div>
-          <span class="text-xs flex-shrink-0">${ex.difficulty === 'facil' ? '🟢' : ex.difficulty === 'medio' ? '🟡' : '🔴'}</span>
-        </div>
-      `).join('');
-    }
-
-    function toggleExerciseSelection(exerciseId) {
-      const exercise = exercises.find(e => e.id === exerciseId);
-      if (!exercise) return;
-
-      const index = selectedExercises.findIndex(s => s.id === exerciseId);
-      if (index > -1) {
-        selectedExercises.splice(index, 1);
-      } else {
-        selectedExercises.push(exercise);
-      }
-
-      updateExercisesForPatient();
-      renderSelectedExercises();
-    }
-
-    function renderSelectedExercises() {
-      const container = document.getElementById('selected-exercises');
-      
-      if (selectedExercises.length === 0) {
-        container.innerHTML = '<p class="text-purple-400 text-center py-4 text-xs sm:text-sm">Clique para adicionar</p>';
-        return;
-      }
-
-      container.innerHTML = `
-        <div class="space-y-2">
-          ${selectedExercises.map((ex, idx) => `
-            <div class="bg-white rounded-lg p-2.5 border-2 border-purple-300 flex items-center justify-between">
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-gray-800 text-xs sm:text-sm truncate">${idx + 1}. ${ex.name}</p>
-                <p class="text-xs text-gray-500">${ex.time}m • ${ex.reps}x${ex.sets}</p>
-              </div>
-              <button onclick="toggleExerciseSelection('${ex.id}')" class="text-red-500 hover:text-red-700 ml-2 flex-shrink-0 text-lg">✕</button>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    function clearPrescription() {
-      selectedExercises = [];
-      document.getElementById('prescription-patient').value = '';
-      document.getElementById('prescription-notes').value = '';
-      document.getElementById('patient-info-card').classList.add('hidden');
-      document.getElementById('available-exercises').innerHTML = '<p class="text-gray-500 text-center py-4 text-sm">Selecione um paciente</p>';
-      renderSelectedExercises();
-      showToast('Prescrição limpa!', 'info');
-    }
-
-    function savePrescription() {
-      const patientId = document.getElementById('prescription-patient').value;
-      if (!patientId || selectedExercises.length === 0) {
-        showToast('Selecione paciente e exercícios!', 'error');
-        return;
-      }
-
-      const patient = patients.find(p => p.id === patientId);
-      const prescription = {
-        id: Date.now().toString(),
-        patientId,
-        patientName: patient.babyName,
-        exercises: [...selectedExercises],
-        notes: document.getElementById('prescription-notes').value,
-        createdAt: new Date().toISOString()
-      };
-
-      prescriptions.push(prescription);
-      saveData('fisio_prescriptions', prescriptions);
-      renderPrescriptions();
-      clearPrescription();
-      showToast('Prescrição salva!');
-    }
-
-    function renderPrescriptions() {
-      const container = document.getElementById('prescriptions-container');
-      
-      if (prescriptions.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 text-center py-8 text-sm">Nenhuma prescrição salva. Crie a primeira! 📋</p>';
-        return;
-      }
-
-      container.innerHTML = prescriptions.map(pres => {
-        const patient = patients.find(p => p.id === pres.patientId);
-        return `
-          <div class="border-2 border-gray-100 rounded-xl p-3 sm:p-4 hover:border-purple-200 transition-colors">
-            <div class="flex items-start justify-between mb-2 gap-2">
-              <div class="flex-1 min-w-0">
-                <h3 class="font-bold text-gray-800 text-sm sm:text-base truncate">${pres.patientName}</h3>
-                <p class="text-xs text-gray-500">${new Date(pres.createdAt).toLocaleDateString('pt-BR')} • ${pres.exercises.length} ex.</p>
-              </div>
-              <div class="flex gap-1 flex-shrink-0">
-                <button onclick="generatePDFFromPrescription('${pres.id}')" class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-bold hover:bg-purple-200 transition-colors">📄</button>
-                <button onclick="deletePrescription('${pres.id}')" class="text-red-500 hover:text-red-700 text-sm font-bold">🗑️</button>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-1">
-              ${pres.exercises.slice(0, 3).map(ex => `
-                <span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">${ex.name}</span>
-              `).join('')}
-              ${pres.exercises.length > 3 ? `<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded text-xs">+${pres.exercises.length - 3}</span>` : ''}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function deletePrescription(id) {
-      const btn = document.querySelector(`[onclick="deletePrescription('${id}')"]`);
-      if (btn) {
-        btn.outerHTML = `
-          <button onclick="confirmDeletePrescription('${id}')" class="text-red-600 font-bold text-xs hover:text-red-800">Sim</button>
-          <button onclick="renderPrescriptions()" class="text-gray-500 font-bold text-xs ml-1">Não</button>
-        `;
-      }
-    }
-
-    function confirmDeletePrescription(id) {
-      prescriptions = prescriptions.filter(p => p.id !== id);
-      saveData('fisio_prescriptions', prescriptions);
-      renderPrescriptions();
-      showToast('Prescrição excluída!', 'info');
-    }
-
-    // PDF Generation
-    function generatePDF() {
-      const patientId = document.getElementById('prescription-patient').value;
-      if (!patientId || selectedExercises.length === 0) {
-        showToast('Selecione paciente e exercícios!', 'error');
-        return;
-      }
-
-      const patient = patients.find(p => p.id === patientId);
-      const notes = document.getElementById('prescription-notes').value;
-      
-      generatePDFDocument(patient, selectedExercises, notes);
-    }
-
-    function generatePDFFromPrescription(prescriptionId) {
-      const prescription = prescriptions.find(p => p.id === prescriptionId);
-      if (!prescription) return;
-
-      const patient = patients.find(p => p.id === prescription.patientId);
-      generatePDFDocument(patient, prescription.exercises, prescription.notes);
-    }
-
-    function generatePDFDocument(patient, exercisesList, notes) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ compress: true });
-      
-      const pageWidth = doc.internal.pageSize.getWidth();
-      const pageHeight = doc.internal.pageSize.getHeight();
-      const margin = 10;
-      let yPos = margin;
-
-      function addNewPageIfNeeded(height) {
-        if (yPos + height > pageHeight - margin - 5) {
-          doc.addPage();
-          yPos = margin;
-          addPageHeader();
-          return true;
+    function filterPrescPatients() {
+        const query = document.getElementById('search-presc-pat').value.toLowerCase();
+        const container = document.getElementById('presc-patients-list');
+        const filtered = patients.filter(p => p.name.toLowerCase().includes(query));
+        
+        if(filtered.length === 0) {
+            container.innerHTML = `<p class="text-xs font-bold text-slate-400 text-center py-4">Nenhum paciente encontrado.</p>`;
+            return;
         }
-        return false;
-      }
 
-      function drawRoundedRect(x, y, w, h, r, fillColor) {
-        doc.setFillColor(...fillColor);
-        doc.roundedRect(x, y, w, h, r, r, 'F');
-      }
+        container.innerHTML = filtered.map(p => `
+            <button onclick="selectPrescPatient('${p.id}')" class="w-full p-4 text-left rounded-xl font-bold text-sm flex justify-between items-center transition-all border-2 ${currentPrescPatientId === p.id ? 'bg-indigo-600 text-white border-indigo-600 shadow-md scale-[1.02]' : 'bg-slate-50 text-slate-600 border-transparent hover:bg-indigo-50 hover:border-indigo-100'}">
+                <div class="flex items-center gap-3">
+                    <span>${p.gender === 'Masculino' ? '👦' : '👧'}</span>
+                    ${p.name}
+                </div>
+                <span class="text-[10px] opacity-70 uppercase tracking-wider">${calculateAge(p.birth)}m</span>
+            </button>
+        `).join('');
+    }
 
-      function addPageHeader() {
-        drawRoundedRect(margin, margin, pageWidth - 2 * margin, 18, 2, [102, 126, 234]);
+    function selectPrescPatient(id) {
+        currentPrescPatientId = id;
+        const p = patients.find(x => x.id === id);
+        const range = getAgeRange(calculateAge(p.birth));
+        
+        const preview = document.getElementById('presc-selected-preview');
+        preview.classList.remove('hidden');
+        preview.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
+                    ${p.gender === 'Masculino' ? '👦' : '👧'}
+                </div>
+                <div>
+                    <h5 class="font-black text-lg leading-tight">${p.name}</h5>
+                    <p class="text-[10px] font-black text-indigo-100 uppercase tracking-widest mt-1">Filtrando: ${range} meses</p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('presc-filter-label').innerText = `Exercícios sugeridos para ${range} meses`;
+        filterPrescPatients(); 
+        renderPrescExercises();
+    }
+
+    function renderPrescExercises() {
+        const query = document.getElementById('search-presc-ex').value.toLowerCase();
+        const grid = document.getElementById('presc-exercises-grid');
+        
+        let pool = exercises;
+        if(currentPrescPatientId) {
+            const p = patients.find(x => x.id === currentPrescPatientId);
+            pool = exercises.filter(ex => ex.age === getAgeRange(calculateAge(p.birth)));
+        }
+
+        const filtered = pool.filter(ex => ex.name.toLowerCase().includes(query) || ex.collection.toLowerCase().includes(query));
+
+        if(filtered.length === 0) {
+            grid.innerHTML = `<p class="text-sm font-bold text-slate-400 col-span-2 text-center py-10">Nenhum exercício encontrado para este filtro.</p>`;
+            return;
+        }
+
+        grid.innerHTML = filtered.map(ex => `
+            <div onclick="togglePrescEx('${ex.id}')" class="p-4 rounded-3xl border-2 transition-all cursor-pointer flex items-center gap-4 ${selectedExIds.has(ex.id) ? 'border-indigo-500 bg-indigo-50 shadow-md scale-[1.02]' : 'border-slate-100 bg-white hover:border-slate-300'}">
+                <div class="w-16 h-16 rounded-2xl bg-slate-200 bg-cover bg-center shrink-0" style="background-image: url('${ex.img || ''}')"></div>
+                <div class="flex-1">
+                    <h6 class="font-bold text-slate-800 text-sm leading-tight">${ex.name}</h6>
+                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-tighter mt-1">${ex.collection} • ${ex.time||0} min</p>
+                </div>
+                <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm ${selectedExIds.has(ex.id) ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 text-transparent'}">
+                    ✓
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function togglePrescEx(id) {
+        if(selectedExIds.has(id)) selectedExIds.delete(id); else selectedExIds.add(id);
+        renderPrescExercises();
+        updatePrescCount();
+    }
+
+    function updatePrescCount() {
+        document.getElementById('presc-count').innerText = `${selectedExIds.size} SELECIONADOS`;
+    }
+
+    // --- NOVO MOTOR DE PDF PREMIUM (MAGAZINE STYLE) ---
+    async function getBase64(url) {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.setAttribute("crossOrigin", "anonymous");
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width; canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                resolve({ 
+                    b64: canvas.toDataURL("image/jpeg", 0.8), 
+                    w: img.width, 
+                    h: img.height 
+                });
+            };
+            img.onerror = () => resolve(null);
+            img.src = url;
+        });
+    }
+
+    async function generateSuperPDF() {
+        if(!currentPrescPatientId || selectedExIds.size === 0) return alert('Selecione um paciente e pelo menos um exercício!');
+        
+        showToast('🚀 Gerando Prontuário Inteligente...');
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const p = patients.find(x => x.id === currentPrescPatientId);
+
+        // FUNÇÃO DE RODAPÉ
+        const addFooter = (doc, pageNum) => {
+            doc.setFontSize(8);
+            doc.setTextColor(180, 180, 180);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Fisio Kids PRO - Dra. Eulália Angelim | Prontuário Gerado Eletronicamente`, 105, 285, { align: 'center' });
+            doc.text(`Página ${pageNum}`, 105, 290, { align: 'center' });
+        };
+
+        // ==========================================
+        // PÁGINA 1: CAPA DO PRONTUÁRIO
+        // ==========================================
+        let currentPage = 1;
+        doc.setFillColor(79, 70, 229); // Indigo-600
+        doc.rect(0, 0, 210, 297, 'F');
+        
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Fisio Kids | Dra. Eulália Angelim', pageWidth / 2, margin + 12, { align: 'center' });
-        yPos = margin + 20;
-      }
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(36);
+        doc.text("PLANO DE", 105, 70, { align: 'center' });
+        doc.text("CUIDADOS", 105, 85, { align: 'center' });
+        
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text("FISIOTERAPIA NEUROFUNCIONAL INFANTIL", 105, 100, { align: 'center' });
+        doc.text("Dra. Eulália Angelim", 105, 108, { align: 'center' });
 
-      // Header
-      addPageHeader();
+        // Caixa Branca com Dados do Paciente
+        doc.setFillColor(255, 255, 255);
+        doc.roundedRect(20, 130, 170, 100, 5, 5, 'F');
+        
+        doc.setTextColor(30, 41, 59);
+        doc.setFontSize(22);
+        doc.setFont("helvetica", "bold");
+        doc.text(p.name, 30, 150);
+        
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(71, 85, 105);
+        doc.text(`Nº DE REGISTRO: ${p.number || 'N/A'}`, 30, 165);
+        
+        doc.setFont("helvetica", "normal");
+        doc.text(`Idade Mapeada: ${calculateAge(p.birth)} meses`, 30, 175);
+        doc.text(`Responsável: ${p.parent}`, 30, 185);
+        doc.text(`Diagnóstico/Foco: ${p.diag || 'Acompanhamento Motor'}`, 30, 195);
+        doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 30, 205);
 
-      // Patient Info (more compact)
-      drawRoundedRect(margin, yPos, pageWidth - 2 * margin, 28, 2, [249, 250, 251]);
-      doc.setDrawColor(102, 126, 234);
-      doc.setLineWidth(0.3);
-      doc.roundedRect(margin, yPos, pageWidth - 2 * margin, 28, 2, 2, 'S');
-
-      doc.setTextColor(31, 41, 55);
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'bold');
-      
-      const col1 = margin + 3;
-      const col2 = pageWidth / 2 + 2;
-      
-      doc.text('Paciente:', col1, yPos + 6);
-      doc.setFont('helvetica', 'normal');
-      doc.text(patient.babyName, col1 + 18, yPos + 6);
-      
-      doc.setFont('helvetica', 'bold');
-      doc.text('Idade:', col2, yPos + 6);
-      doc.setFont('helvetica', 'normal');
-      doc.text(formatAge(patient.birthDate), col2 + 12, yPos + 6);
-      
-      doc.setFont('helvetica', 'bold');
-      doc.text('Responsável:', col1, yPos + 13);
-      doc.setFont('helvetica', 'normal');
-      doc.text(patient.motherName.substring(0, 30), col1 + 26, yPos + 13);
-      
-      doc.setFont('helvetica', 'bold');
-      doc.text('Tel:', col2, yPos + 13);
-      doc.setFont('helvetica', 'normal');
-      doc.text(patient.phone, col2 + 8, yPos + 13);
-      
-      if (patient.diagnosis) {
-        doc.setFont('helvetica', 'bold');
-        doc.text('Diagnóstico:', col1, yPos + 20);
-        doc.setFont('helvetica', 'normal');
-        doc.text(patient.diagnosis.substring(0, 65), col1 + 26, yPos + 20);
-      }
-
-      yPos += 32;
-
-      // Date
-      doc.setFontSize(8);
-      doc.setTextColor(107, 114, 128);
-      doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')} | Profissional: Dra. Eulália Angelim`, pageWidth - margin, yPos, { align: 'right' });
-      yPos += 6;
-
-      // Exercises Header
-      drawRoundedRect(margin, yPos, pageWidth - 2 * margin, 8, 1.5, [102, 126, 234]);
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(9);
-      doc.setFont('helvetica', 'bold');
-      doc.text(`EXERCÍCIOS PRESCRITOS (${exercisesList.length})`, margin + 3, yPos + 5.5);
-      yPos += 10;
-
-      // Exercises
-      exercisesList.forEach((ex, index) => {
-        const exHeight = 38;
-        addNewPageIfNeeded(exHeight);
-
-        // Exercise card
-        drawRoundedRect(margin, yPos, pageWidth - 2 * margin, exHeight - 2, 1.5, [255, 255, 255]);
-        doc.setDrawColor(200, 200, 200);
-        doc.setLineWidth(0.2);
-        doc.roundedRect(margin, yPos, pageWidth - 2 * margin, exHeight - 2, 1.5, 1.5, 'S');
-
-        // Number badge
-        drawRoundedRect(margin + 1, yPos + 1, 7, 5.5, 1, [240, 147, 251]);
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(7);
-        doc.setFont('helvetica', 'bold');
-        doc.text(`${index + 1}`, margin + 4.5, yPos + 4.5, { align: 'center' });
-
-        // Exercise name
-        doc.setTextColor(31, 41, 55);
-        doc.setFontSize(8.5);
-        doc.setFont('helvetica', 'bold');
-        doc.text(ex.name.substring(0, 50), margin + 10, yPos + 3);
-
-        // Quick info row
-        doc.setFontSize(7);
-        doc.setFont('helvetica', 'normal');
-        doc.text(`⏱️${ex.time}m | 🔄${ex.reps}x${ex.sets} | ${ex.collection.substring(0, 20)}`, margin + 10, yPos + 8);
-
-        // Materials
-        let contentY = yPos + 12;
-        if (ex.materials.length > 0) {
-          doc.setFontSize(6.5);
-          doc.setFont('helvetica', 'bold');
-          doc.text('🎯 Materiais:', margin + 2, contentY);
-          doc.setFont('helvetica', 'normal');
-          const materialsText = ex.materials.join(', ');
-          doc.text(materialsText.substring(0, 80), margin + 15, contentY);
-          contentY += 4;
+        const obs = document.getElementById('presc-obs').value;
+        if(obs) {
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "italic");
+            doc.setTextColor(100, 116, 139);
+            const obsLines = doc.splitTextToSize(`Nota da Fisio: ${obs}`, 150);
+            doc.text(obsLines, 30, 220);
         }
 
-        // Description
-        doc.setFontSize(6.5);
-        doc.setFont('helvetica', 'bold');
-        doc.text('📝 Instruções:', margin + 2, contentY);
-        doc.setFont('helvetica', 'normal');
-        const descLines = doc.splitTextToSize(ex.description, pageWidth - 2 * margin - 4);
-        doc.text(descLines.slice(0, 2), margin + 16, contentY);
-        contentY += 6;
+        // ==========================================
+        // PÁGINAS SEGUINTES: EXERCÍCIOS COM FLUXO CONTÍNUO
+        // ==========================================
+        const selectedList = exercises.filter(ex => selectedExIds.has(ex.id));
+        let y = 300; // Força uma nova página no primeiro item do loop
 
-        // Benefits & Precautions
-        if (ex.benefits || ex.precautions) {
-          doc.setFontSize(6);
-          if (ex.benefits) {
-            doc.setFont('helvetica', 'bold');
-            doc.text('✨ Benefícios: ', margin + 2, contentY);
-            doc.setFont('helvetica', 'normal');
-            doc.text(ex.benefits.substring(0, 60), margin + 22, contentY);
-          }
-          if (ex.precautions) {
-            contentY += 3;
-            doc.setFont('helvetica', 'bold');
-            doc.text('⚠️ Precauções: ', margin + 2, contentY);
-            doc.setFont('helvetica', 'normal');
-            doc.text(ex.precautions.substring(0, 55), margin + 25, contentY);
-          }
+        for(let i=0; i < selectedList.length; i++) {
+            const ex = selectedList[i];
+            
+            // Verifica se precisa de nova página para começar o exercício
+            if (y > 230) {
+                doc.addPage();
+                currentPage++;
+                addFooter(doc, currentPage);
+                y = 20;
+            } else {
+                y += 15; // Espaço entre um exercício e outro se ficarem na mesma folha
+                doc.setDrawColor(226, 232, 240);
+                doc.line(15, y-8, 195, y-8); // Linha separadora
+            }
+
+            // IMAGEM (Ajustada para o fluxo contínuo)
+            if (ex.img) {
+                const imgData = await getBase64(ex.img);
+                if (imgData && imgData.b64) {
+                    // Mantém largura de 180mm (com margens)
+                    let imgH = (180 * imgData.h) / imgData.w;
+                    if (imgH > 100) imgH = 100; // Altura máxima para não engolir a página
+                    
+                    // Se a imagem não couber na página atual, quebra a página
+                    if (y + imgH > 260) {
+                        doc.addPage();
+                        currentPage++;
+                        addFooter(doc, currentPage);
+                        y = 20;
+                    }
+
+                    try {
+                        doc.addImage(imgData.b64, 'JPEG', 15, y, 180, imgH);
+                        y += imgH + 10;
+                    } catch(e) {}
+                }
+            }
+
+            // TÍTULO DO EXERCÍCIO
+            doc.setTextColor(79, 70, 229);
+            doc.setFontSize(20);
+            doc.setFont("helvetica", "bold");
+            const titleLines = doc.splitTextToSize(`${i + 1}. ${ex.name.toUpperCase()}`, 180);
+            
+            // Checa quebra de página para o título
+            if (y + (titleLines.length * 8) > 270) {
+                doc.addPage(); currentPage++; addFooter(doc, currentPage); y = 20;
+            }
+            
+            doc.text(titleLines, 15, y);
+            y += (titleLines.length * 8) + 2;
+
+            // BARRA ROXA COM METADADOS
+            if (y + 12 > 270) { doc.addPage(); currentPage++; addFooter(doc, currentPage); y = 20; }
+            doc.setFillColor(168, 85, 247); // Purple
+            doc.roundedRect(15, y, 180, 10, 2, 2, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "bold");
+            doc.text(`Foco: ${ex.collection}   |   Tempo: ${ex.time||'-'} min   |   Reps: ${ex.reps||'-'}   |   Séries: ${ex.series||'-'}`, 20, y + 7);
+
+            y += 18;
+
+            // INSTRUÇÕES DETALHADAS (Com Auto-Page Break linha por linha)
+            doc.setTextColor(51, 65, 85);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            
+            if (y > 270) { doc.addPage(); currentPage++; addFooter(doc, currentPage); y = 20; }
+            doc.text("Como realizar o estímulo:", 15, y);
+            y += 8;
+            
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(71, 85, 105);
+            const descLines = doc.splitTextToSize(ex.desc, 180);
+            
+            // Escreve linha a linha para respeitar o limite inferior da folha
+            for(let j = 0; j < descLines.length; j++) {
+                if (y > 275) {
+                    doc.addPage();
+                    currentPage++;
+                    addFooter(doc, currentPage);
+                    y = 20;
+                }
+                doc.text(descLines[j], 15, y);
+                y += 6;
+            }
         }
 
-        yPos += exHeight;
-      });
-
-      // Notes section
-      if (notes && notes.trim()) {
-        addNewPageIfNeeded(15);
-        yPos += 2;
-        drawRoundedRect(margin, yPos, pageWidth - 2 * margin, 12, 1.5, [254, 249, 195]);
-        doc.setTextColor(161, 98, 7);
-        doc.setFontSize(8);
-        doc.setFont('helvetica', 'bold');
-        doc.text('📝 Observações:', margin + 2, yPos + 4);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(7);
-        const noteLines = doc.splitTextToSize(notes, pageWidth - 2 * margin - 5);
-        doc.text(noteLines.slice(0, 2), margin + 2, yPos + 8);
-      }
-
-      // Footer
-      const footerY = pageHeight - 8;
-      doc.setDrawColor(200, 200, 200);
-      doc.setLineWidth(0.2);
-      doc.line(margin, footerY - 3, pageWidth - margin, footerY - 3);
-      
-      doc.setFontSize(6);
-      doc.setTextColor(150, 150, 150);
-      doc.text('Fisio Kids • Fisioterapia Infantil | Dra. Eulália Angelim', pageWidth / 2, footerY, { align: 'center' });
-
-      // Save PDF
-      const fileName = `Prescricao_${patient.babyName.replace(/\s+/g, '_')}_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.pdf`;
-      doc.save(fileName);
-      showToast('PDF gerado! 📄');
+        doc.save(`Plano_${p.number ? p.number+'_' : ''}${p.name.replace(/\s+/g, '_')}.pdf`);
+        showToast('✅ Prontuário Premium Gerado!');
     }
 
-    // Initialize
+    // --- INIT ---
     renderExercises();
     renderPatients();
-    renderPrescriptions();
-    document.getElementById('material-input').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        addMaterial();
-      }
-    });
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d12a00c710fba11',t:'MTc3MTYzODk2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</script>
+
+</body>
 </html>
