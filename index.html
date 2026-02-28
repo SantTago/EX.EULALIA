@@ -6,28 +6,18 @@
     <title>Fisio Kids Pro - Dra. Eulália Angelim</title>
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { font-family: 'Nunito', 'Open Sans', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        * { font-family: 'Nunito', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .gradient-bg { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
         .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02); }
         .btn-primary { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border-radius: 16px; font-weight: 800; }
-        .btn-primary:hover { transform: scale(1.02); filter: brightness(1.1); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
-        .tab-active { color: #6366f1 !important; border-bottom: 4px solid #6366f1; transform: translateY(-2px); }
-        .input-search { padding-left: 45px !important; }
-        .lupa-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
-        .image-container { overflow: hidden; border-radius: 24px; position: relative; }
-        .image-container img { transition: transform 0.5s ease; }
-        .image-container:hover img { transform: scale(1.08); }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-slide { animation: slideIn 0.5s ease forwards; }
+        .btn-primary:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .tab-active { color: #6366f1 !important; border-bottom: 4px solid #6366f1; }
+        .image-container { overflow: hidden; border-radius: 24px; position: relative; height: 180px; background: #f1f5f9; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="h-full bg-slate-50 text-slate-800">
@@ -39,52 +29,96 @@
                 <div class="w-16 h-16 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center text-4xl shadow-inner border border-white/30">👶</div>
                 <div>
                     <h1 class="text-3xl font-black tracking-tighter">Fisio Kids <span class="font-thin opacity-80 text-2xl">PRO</span></h1>
-                    <p class="text-xs font-bold uppercase tracking-[0.3em] opacity-90">Dra. Eulália Angelim</p>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.3em] opacity-90">Dra. Eulália Angelim</p>
                 </div>
             </div>
-            <div class="hidden md:flex flex-col items-end">
-                <span class="text-[10px] font-black bg-white/20 px-3 py-1 rounded-full uppercase">100% Offline & Local</span>
-                <span id="storage-info" class="text-[9px] opacity-70 mt-1 uppercase font-bold tracking-widest">Sincronizado</span>
+            <div class="flex bg-white/20 p-1 rounded-xl">
+                <button onclick="setMode('pro')" id="btn-pro" class="px-4 py-1 rounded-lg text-[10px] font-black bg-white text-indigo-600">PROFISSIONAL</button>
+                <button onclick="setMode('mae')" id="btn-mae" class="px-4 py-1 rounded-lg text-[10px] font-black">MÃE</button>
             </div>
         </div>
     </header>
 
     <nav class="bg-white border-b border-slate-200 sticky top-0 z-20 overflow-x-auto">
         <div class="max-w-7xl mx-auto flex">
-            <button onclick="switchTab('exercises')" id="tab-exercises" class="tab-active flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400 hover:text-indigo-600 flex items-center justify-center gap-2">🏋️ EXERCÍCIOS</button>
-            <button onclick="switchTab('patients')" id="tab-patients" class="flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400 hover:text-indigo-600 flex items-center justify-center gap-2">👶 PACIENTES</button>
-            <button onclick="switchTab('prescriptions')" id="tab-prescriptions" class="flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400 hover:text-indigo-600 flex items-center justify-center gap-2">📋 PRESCRIÇÕES</button>
+            <button onclick="switchTab('patients')" id="tab-patients" class="tab-active flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400">👶 PACIENTES</button>
+            <button onclick="switchTab('exercises')" id="tab-exercises" class="flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400">🏋️ EXERCÍCIOS</button>
+            <button onclick="switchTab('prescriptions')" id="tab-prescriptions" class="flex-1 min-w-[120px] py-5 text-sm font-black text-slate-400">📋 PRESCRIÇÃO/MAPA</button>
         </div>
     </nav>
 
     <main class="flex-1 overflow-auto p-4 md:p-10">
         <div class="max-w-7xl mx-auto">
 
-            <section id="section-exercises" class="animate-slide">
+            <section id="section-patients" class="animate-slide">
                 <div class="flex flex-col md:flex-row gap-6 mb-10 items-end">
                     <div class="flex-1 w-full">
-                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase ml-2 tracking-widest">O que você procura?</label>
-                        <div class="relative">
-                            <span class="lupa-icon">🔍</span>
-                            <input type="text" id="search-ex" onkeyup="renderExercises()" placeholder="Pesquisar exercícios por nome ou coleção..." class="w-full h-16 bg-white rounded-2xl border-2 border-slate-100 px-12 focus:border-indigo-500 focus:ring-0 shadow-sm text-lg font-bold input-search">
-                        </div>
+                        <input type="text" id="search-pat" onkeyup="renderPatients()" placeholder="Buscar pequeno(a)..." class="w-full h-16 bg-white rounded-2xl border-2 border-slate-100 px-6 shadow-sm text-lg font-bold">
                     </div>
-                    <button onclick="toggleForm('exercise-form-container')" class="h-16 px-8 btn-primary flex items-center gap-3">
-                        <span class="text-2xl">＋</span> NOVO EXERCÍCIO
+                    <button onclick="toggleForm('patient-form-container')" id="btn-new-pat" class="h-16 px-8 btn-primary flex items-center gap-3">
+                        <span>👶</span> NOVO PACIENTE
                     </button>
                 </div>
 
-                <div id="exercise-form-container" class="hidden bg-white rounded-[32px] card-shadow p-8 mb-10 border-2 border-indigo-50">
+                <div id="patient-form-container" class="hidden bg-white rounded-[32px] card-shadow p-8 mb-10 border-2 border-indigo-50">
+                    <form id="patient-form" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <input type="hidden" id="pat-id">
+                        <div class="md:col-span-2">
+                            <input type="text" id="pat-name" required placeholder="Nome do Bebê" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-1">
+                            <input type="date" id="pat-birth" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        </div>
+                        <div class="md:col-span-1">
+                            <select id="pat-gender" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                                <option value="Masculino">Menino 👦</option>
+                                <option value="Feminino">Menina 👧</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-4">
+                            <textarea id="pat-diag" placeholder="Observações Clínicas / Diagnóstico" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold"></textarea>
+                        </div>
+                        <div class="md:col-span-4 flex justify-end gap-4">
+                            <button type="submit" class="btn-primary px-12 py-4">CADASTRAR</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="patients-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </section>
+
+            <section id="section-exercises" class="hidden animate-slide">
+                <div class="flex flex-col md:flex-row gap-6 mb-10 items-end">
+                    <div class="flex-1 w-full">
+                        <input type="text" id="search-ex" onkeyup="renderExercises()" placeholder="Pesquisar exercício ou eixo..." class="w-full h-16 bg-white rounded-2xl border-2 border-slate-100 px-6 shadow-sm text-lg font-bold">
+                    </div>
+                    <button onclick="toggleForm('exercise-form-container')" id="btn-new-ex" class="h-16 px-8 btn-primary flex items-center gap-3">
+                        <span>🏋️</span> NOVO EXERCÍCIO
+                    </button>
+                </div>
+
+                <div id="exercise-form-container" class="hidden bg-white rounded-[32px] card-shadow p-8 mb-10 border-2 border-purple-50">
                     <form id="exercise-form" class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <input type="hidden" id="ex-id">
                         <div class="md:col-span-2">
                             <input type="text" id="ex-name" required placeholder="Nome do Exercício" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
                         </div>
-                        <div class="md:col-span-1">
-                            <input type="text" id="ex-collection" required placeholder="Coleção (Ex: Motor)" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                        <div class="md:col-span-2">
+                            <select id="ex-collection" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
+                                <option value="">Selecione o Eixo Neuromotor</option>
+                                <option>Base Sensorial</option>
+                                <option>Controle Cervical</option>
+                                <option>Cintura Escapular</option>
+                                <option>Organização Lateral</option>
+                                <option>Tronco / Core</option>
+                                <option>Cintura Pélvica</option>
+                                <option>Progressão em Prona</option>
+                                <option>Transições Posturais</option>
+                                <option>Ortostatismo</option>
+                                <option>Coordenação Manual</option>
+                            </select>
                         </div>
                         <div class="md:col-span-1">
-                            <select id="ex-age" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold appearance-none">
+                            <select id="ex-age" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
                                 <option value="0-2">0-2 meses</option>
                                 <option value="3-4">3-4 meses</option>
                                 <option value="5-6">5-6 meses</option>
@@ -93,373 +127,260 @@
                                 <option value="11-12">11-12 meses</option>
                             </select>
                         </div>
-                        <div class="md:col-span-2">
+                        <div class="md:col-span-3">
                             <input type="url" id="ex-img" placeholder="Link da Imagem (URL)" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
                         </div>
                         <div class="grid grid-cols-3 gap-2 md:col-span-2">
-                            <input type="text" id="ex-time" placeholder="Minutos" class="p-4 bg-slate-50 rounded-xl border-none font-bold text-center">
-                            <input type="text" id="ex-reps" placeholder="Reps" class="p-4 bg-slate-50 rounded-xl border-none font-bold text-center">
-                            <input type="text" id="ex-series" placeholder="Séries" class="p-4 bg-slate-50 rounded-xl border-none font-bold text-center">
+                            <input type="text" id="ex-time" placeholder="Tempo" class="p-4 bg-slate-50 rounded-xl border-none font-bold">
+                            <input type="text" id="ex-reps" placeholder="Reps" class="p-4 bg-slate-50 rounded-xl border-none font-bold">
+                            <input type="text" id="ex-series" placeholder="Séries" class="p-4 bg-slate-50 rounded-xl border-none font-bold">
                         </div>
                         <div class="md:col-span-4">
-                            <textarea id="ex-desc" required placeholder="Instruções detalhadas..." rows="3" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold"></textarea>
+                            <textarea id="ex-desc" required placeholder="Instruções e Objetivos..." class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold"></textarea>
                         </div>
                         <div class="md:col-span-4 flex justify-end gap-4">
-                            <button type="button" onclick="toggleForm('exercise-form-container')" class="font-black text-slate-400 px-6">CANCELAR</button>
-                            <button type="submit" class="btn-primary px-12 py-4 shadow-xl">SALVAR AGORA</button>
+                            <button type="submit" class="btn-primary px-12 py-4">SALVAR AGORA</button>
                         </div>
                     </form>
                 </div>
-
                 <div id="exercises-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-            </section>
-
-            <section id="section-patients" class="hidden animate-slide">
-                <div class="flex flex-col md:flex-row gap-6 mb-10 items-end">
-                    <div class="flex-1 w-full">
-                        <label class="block text-xs font-black text-slate-400 mb-2 uppercase ml-2 tracking-widest">Buscar Pequeno(a)</label>
-                        <div class="relative">
-                            <span class="lupa-icon">🔍</span>
-                            <input type="text" id="search-pat" onkeyup="renderPatients()" placeholder="Nome ou Nº do paciente..." class="w-full h-16 bg-white rounded-2xl border-2 border-slate-100 px-12 shadow-sm text-lg font-bold input-search">
-                        </div>
-                    </div>
-                    <button onclick="toggleForm('patient-form-container')" class="h-16 px-8 btn-primary flex items-center gap-3">
-                        <span class="text-2xl">👶</span> NOVO PACIENTE
-                    </button>
-                </div>
-
-                <div id="patient-form-container" class="hidden bg-white rounded-[32px] card-shadow p-8 mb-10 border-2 border-pink-50">
-                    <form id="patient-form" class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <input type="hidden" id="pat-id">
-                        <div class="md:col-span-2">
-                            <input type="text" id="pat-name" required placeholder="Nome do Bebê" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
-                        </div>
-                        <div class="md:col-span-1">
-                            <input type="text" id="pat-number" placeholder="Nº (Ex: 001)" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
-                        </div>
-                        <div class="md:col-span-1">
-                            <select id="pat-gender" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold appearance-none">
-                                <option value="Masculino">Menino 👦</option>
-                                <option value="Feminino">Menina 👧</option>
-                            </select>
-                        </div>
-                        <div class="md:col-span-1">
-                            <input type="date" id="pat-birth" required class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
-                        </div>
-                        <div class="md:col-span-3">
-                            <input type="text" id="pat-parent" required placeholder="Nome do Responsável" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
-                        </div>
-                        <div class="md:col-span-4">
-                            <input type="text" id="pat-diag" placeholder="Diagnóstico Clínico" class="w-full p-4 bg-slate-50 rounded-xl border-none font-bold">
-                        </div>
-                        <div class="md:col-span-4 flex justify-end gap-4">
-                            <button type="button" onclick="toggleForm('patient-form-container')" class="font-black text-slate-400 px-6">CANCELAR</button>
-                            <button type="submit" class="btn-primary px-12 py-4 shadow-xl">CADASTRAR</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div id="patients-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </section>
 
             <section id="section-prescriptions" class="hidden animate-slide">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    <div class="lg:col-span-1 space-y-8">
-                        
-                        <div class="bg-white rounded-[32px] card-shadow p-8 border-2 border-indigo-50">
-                            <h3 class="text-xs font-black text-slate-400 mb-4 uppercase tracking-[0.2em]">1. Selecionar Paciente</h3>
-                            <div class="relative mb-6">
-                                <span class="lupa-icon">🔍</span>
-                                <input type="text" id="search-presc-pat" onkeyup="filterPrescPatients()" placeholder="Pesquisar por nome..." class="w-full h-14 bg-indigo-50/50 rounded-xl px-12 font-bold focus:ring-2 focus:ring-indigo-400 outline-none text-indigo-900 border-2 border-transparent focus:border-indigo-400 transition-all">
-                            </div>
-                            <div id="presc-patients-list" class="max-h-60 overflow-y-auto space-y-2 pr-2"></div>
-                            
-                            <div id="presc-selected-preview" class="mt-6 hidden p-6 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl shadow-lg text-white animate-slide"></div>
-                        </div>
-
+                    <div class="lg:col-span-1 space-y-6">
                         <div class="bg-white rounded-[32px] card-shadow p-8">
-                            <h3 class="text-xs font-black text-slate-400 mb-4 uppercase tracking-[0.2em]">2. Nota para a Família</h3>
-                            <textarea id="presc-obs" rows="4" class="w-full bg-slate-50 rounded-xl border-none p-4 font-bold" placeholder="Digite orientações gerais, recados ou o foco da semana..."></textarea>
+                            <h3 class="text-xs font-black text-slate-400 mb-4 uppercase">1. Selecionar Paciente</h3>
+                            <div id="presc-patients-list" class="space-y-2 max-h-60 overflow-y-auto"></div>
                         </div>
 
-                        <button onclick="generateSuperPDF()" class="w-full h-24 btn-primary rounded-[32px] text-xl shadow-2xl flex items-center justify-center gap-4 hover:scale-[1.03]">
-                            <span class="text-3xl">📄</span> GERAR PDF PREMIUM
+                        <div id="map-container" class="bg-white rounded-[32px] card-shadow p-8 hidden">
+                            <h3 class="text-xs font-black text-slate-400 mb-4 uppercase">2. Mapa de Evolução Corporal</h3>
+                            <div id="body-map" class="space-y-3"></div>
+                        </div>
+
+                        <button onclick="generateSuperPDF()" class="w-full h-20 btn-primary rounded-[32px] text-lg shadow-xl flex items-center justify-center gap-4">
+                            <span>📄</span> GERAR PDF PREMIUM
                         </button>
                     </div>
 
                     <div class="lg:col-span-2">
-                        <div class="flex items-center justify-between mb-8">
-                            <h3 id="presc-filter-label" class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">3. Selecionar Exercícios</h3>
-                            <span id="presc-count" class="bg-indigo-600 text-white px-4 py-1 rounded-full text-[10px] font-black shadow-md">0 SELECIONADOS</span>
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 id="presc-label" class="text-xs font-black text-slate-400 uppercase">3. Exercícios do Plano</h3>
+                            <span id="presc-count" class="bg-indigo-600 text-white px-4 py-1 rounded-full text-[10px] font-black">0 SELECIONADOS</span>
                         </div>
-                        <div class="relative mb-6">
-                            <span class="lupa-icon">🔍</span>
-                            <input type="text" id="search-presc-ex" onkeyup="renderPrescExercises()" placeholder="Filtrar por nome ou coleção..." class="w-full h-14 bg-white rounded-xl px-12 font-bold shadow-sm border-2 border-slate-50 focus:border-indigo-400 outline-none">
-                        </div>
-                        <div id="presc-exercises-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[800px] overflow-y-auto pr-2 pb-10"></div>
+                        <div id="presc-exercises-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
                     </div>
                 </div>
             </section>
         </div>
     </main>
-
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-10 py-5 bg-slate-900 text-white rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all z-50 font-black text-center"></div>
 </div>
 
 <script>
-    // --- DATABASE (LOCAL STORAGE) ---
-    let exercises = JSON.parse(localStorage.getItem('fk_pro_ex_v7') || '[]');
-    let patients = JSON.parse(localStorage.getItem('fk_pro_pat_v7') || '[]');
+    let appMode = 'pro';
+    let exercises = JSON.parse(localStorage.getItem('fk_pro_ex_v9') || '[]');
+    let patients = JSON.parse(localStorage.getItem('fk_pro_pat_v9') || '[]');
     let selectedExIds = new Set();
-    let currentPrescPatientId = null;
+    let currentPatId = null;
 
-    // Migração de dados antigos se houver
-    if (patients.length === 0) {
-        let oldPats = JSON.parse(localStorage.getItem('fk_pro_pat_v6') || '[]');
-        if (oldPats.length > 0) { patients = oldPats; localStorage.setItem('fk_pro_pat_v7', JSON.stringify(patients)); }
-    }
-    if (exercises.length === 0) {
-        let oldEx = JSON.parse(localStorage.getItem('fk_pro_ex_v6') || '[]');
-        if (oldEx.length > 0) { exercises = oldEx; localStorage.setItem('fk_pro_ex_v7', JSON.stringify(exercises)); }
-    }
+    const axes = ["Base Sensorial", "Controle Cervical", "Cintura Escapular", "Organização Lateral", "Tronco / Core", "Cintura Pélvica", "Progressão em Prona", "Transições Posturais", "Ortostatismo", "Coordenação Manual"];
 
-    // --- UTILS ---
-    function showToast(m) {
-        const t = document.getElementById('toast');
-        t.innerText = m; t.classList.remove('opacity-0');
-        setTimeout(() => t.classList.add('opacity-0'), 3000);
-    }
-
-    function toggleForm(id) {
-        document.getElementById(id).classList.toggle('hidden');
-    }
-
-    function calculateAge(date) {
-        if(!date) return 0;
-        const birth = new Date(date);
-        const now = new Date();
-        let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
-        if (now.getDate() < birth.getDate()) months--;
-        return Math.max(0, months);
-    }
-
-    function getAgeRange(months) {
-        if (months <= 2) return "0-2"; if (months <= 4) return "3-4"; if (months <= 6) return "5-6";
-        if (months <= 8) return "7-8"; if (months <= 10) return "9-10"; return "11-12";
+    function setMode(mode) {
+        appMode = mode;
+        document.getElementById('btn-pro').className = mode === 'pro' ? 'px-4 py-1 rounded-lg text-[10px] font-black bg-white text-indigo-600' : 'px-4 py-1 rounded-lg text-[10px] font-black';
+        document.getElementById('btn-mae').className = mode === 'mae' ? 'px-4 py-1 rounded-lg text-[10px] font-black bg-white text-indigo-600' : 'px-4 py-1 rounded-lg text-[10px] font-black';
+        
+        const proElements = ['btn-new-pat', 'btn-new-ex'];
+        proElements.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.style.display = mode === 'pro' ? 'flex' : 'none';
+        });
+        
+        renderExercises();
+        renderPatients();
     }
 
     function switchTab(t) {
-        ['exercises', 'patients', 'prescriptions'].forEach(s => {
+        ['patients', 'exercises', 'prescriptions'].forEach(s => {
             document.getElementById(`section-${s}`).classList.toggle('hidden', s !== t);
             document.getElementById(`tab-${s}`).classList.toggle('tab-active', s === t);
         });
         if(t === 'prescriptions') initPresc();
     }
 
-    // --- EXERCÍCIOS ---
-    document.getElementById('exercise-form').onsubmit = (e) => {
+    function toggleForm(id) { document.getElementById(id).classList.toggle('hidden'); }
+
+    function calculateAge(date) {
+        const birth = new Date(date);
+        const now = new Date();
+        let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+        return Math.max(0, months);
+    }
+
+    function getRange(m) {
+        if(m <= 2) return "0-2"; if(m <= 4) return "3-4"; if(m <= 6) return "5-6";
+        if(m <= 8) return "7-8"; if(m <= 10) return "9-10"; return "11-12";
+    }
+
+    // --- PACIENTES ---
+    document.getElementById('patient-form').onsubmit = (e) => {
         e.preventDefault();
-        const id = document.getElementById('ex-id').value || Date.now().toString();
-        const data = {
-            id,
-            name: document.getElementById('ex-name').value,
-            collection: document.getElementById('ex-collection').value,
-            age: document.getElementById('ex-age').value,
-            time: document.getElementById('ex-time').value,
-            reps: document.getElementById('ex-reps').value,
-            series: document.getElementById('ex-series').value,
-            img: document.getElementById('ex-img').value,
-            desc: document.getElementById('ex-desc').value
+        const p = {
+            id: Date.now().toString(),
+            name: document.getElementById('pat-name').value,
+            birth: document.getElementById('pat-birth').value,
+            gender: document.getElementById('pat-gender').value,
+            diag: document.getElementById('pat-diag').value,
+            progress: {}
         };
-        const idx = exercises.findIndex(x => x.id === id);
-        if(idx > -1) exercises[idx] = data; else exercises.push(data);
-        localStorage.setItem('fk_pro_ex_v7', JSON.stringify(exercises));
-        e.target.reset(); document.getElementById('ex-id').value = ""; toggleForm('exercise-form-container');
-        renderExercises(); showToast('Exercício Gravado! 🏋️');
+        patients.push(p);
+        localStorage.setItem('fk_pro_pat_v9', JSON.stringify(patients));
+        e.target.reset(); toggleForm('patient-form-container'); renderPatients();
     };
 
-    function renderExercises() {
-        const query = document.getElementById('search-ex').value.toLowerCase();
-        const list = document.getElementById('exercises-list');
-        const filtered = exercises.filter(ex => 
-            ex.name.toLowerCase().includes(query) || ex.collection.toLowerCase().includes(query)
-        );
-
-        list.innerHTML = filtered.map(ex => `
-            <div class="bg-white rounded-[40px] p-6 card-shadow border border-slate-50 group hover:border-indigo-200 animate-slide flex flex-col h-full">
-                <div class="image-container mb-6 h-48 bg-slate-100 shrink-0">
-                    <img src="${ex.img || 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=600'}" class="w-full h-full object-cover">
+    function renderPatients() {
+        const list = document.getElementById('patients-list');
+        list.innerHTML = patients.map(p => `
+            <div class="bg-white rounded-[32px] p-8 card-shadow border border-slate-50 flex flex-col items-center text-center">
+                <div class="w-20 h-20 rounded-3xl ${p.gender==='Masculino'?'bg-blue-50 text-blue-500':'bg-pink-50 text-pink-500'} flex items-center justify-center text-3xl mb-4">
+                    ${p.gender==='Masculino'?'👦':'👧'}
                 </div>
-                <div class="flex justify-between items-start mb-3">
-                    <span class="bg-indigo-50 text-indigo-600 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter">${ex.age} meses</span>
-                    <span class="text-[10px] font-black text-slate-300 uppercase">${ex.collection}</span>
-                </div>
-                <h4 class="text-xl font-black text-slate-800 leading-tight mb-4 flex-1">${ex.name}</h4>
-                <div class="flex gap-2 border-t pt-5 mt-auto">
-                    <button onclick="editEx('${ex.id}')" class="flex-1 h-12 rounded-2xl bg-slate-50 font-black text-slate-400 hover:bg-indigo-600 hover:text-white">EDITAR</button>
-                    <button onclick="deleteEx('${ex.id}')" class="w-12 h-12 flex items-center justify-center text-slate-200 hover:text-red-500 bg-slate-50 rounded-2xl">🗑️</button>
+                <h4 class="text-xl font-black">${p.name}</h4>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">${calculateAge(p.birth)} Meses • Faixa ${getRange(calculateAge(p.birth))}</span>
+                <div class="mt-6 w-full pt-4 border-t">
+                    <button onclick="selectForPresc('${p.id}')" class="w-full py-3 bg-indigo-50 text-indigo-600 rounded-xl font-black text-xs hover:bg-indigo-600 hover:text-white uppercase">Ver Prontuário</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function editEx(id) {
-        const ex = exercises.find(x => x.id === id);
-        Object.keys(ex).forEach(k => { if(document.getElementById(`ex-${k}`)) document.getElementById(`ex-${k}`).value = ex[k]; });
-        document.getElementById('exercise-form-container').classList.remove('hidden');
-        window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    function deleteEx(id) { if(confirm('Excluir exercício permanentemente?')) { exercises = exercises.filter(x => x.id !== id); localStorage.setItem('fk_pro_ex_v7', JSON.stringify(exercises)); renderExercises(); } }
-
-    // --- PACIENTES ---
-    document.getElementById('patient-form').onsubmit = (e) => {
+    // --- EXERCÍCIOS ---
+    document.getElementById('exercise-form').onsubmit = (e) => {
         e.preventDefault();
-        const id = document.getElementById('pat-id').value || Date.now().toString();
-        const data = {
-            id,
-            name: document.getElementById('pat-name').value,
-            number: document.getElementById('pat-number').value || '---',
-            birth: document.getElementById('pat-birth').value,
-            gender: document.getElementById('pat-gender').value,
-            parent: document.getElementById('pat-parent').value,
-            diag: document.getElementById('pat-diag').value
+        const ex = {
+            id: Date.now().toString(),
+            name: document.getElementById('ex-name').value,
+            collection: document.getElementById('ex-collection').value,
+            age: document.getElementById('ex-age').value,
+            img: document.getElementById('ex-img').value,
+            time: document.getElementById('ex-time').value,
+            reps: document.getElementById('ex-reps').value,
+            series: document.getElementById('ex-series').value,
+            desc: document.getElementById('ex-desc').value
         };
-        const idx = patients.findIndex(p => p.id === id);
-        if(idx > -1) patients[idx] = data; else patients.push(data);
-        localStorage.setItem('fk_pro_pat_v7', JSON.stringify(patients));
-        e.target.reset(); toggleForm('patient-form-container'); renderPatients(); showToast('Pequeno(a) cadastrado! 👶');
+        exercises.push(ex);
+        localStorage.setItem('fk_pro_ex_v9', JSON.stringify(exercises));
+        e.target.reset(); toggleForm('exercise-form-container'); renderExercises();
     };
 
-    function renderPatients() {
-        const query = document.getElementById('search-pat').value.toLowerCase();
-        const list = document.getElementById('patients-list');
-        const filtered = patients.filter(p => p.name.toLowerCase().includes(query) || (p.number && p.number.toLowerCase().includes(query)));
-
-        list.innerHTML = filtered.map(p => {
+    function renderExercises() {
+        const list = document.getElementById('exercises-list');
+        const query = document.getElementById('search-ex').value.toLowerCase();
+        let pool = exercises;
+        
+        if(appMode === 'mae' && currentPatId) {
+            const p = patients.find(x => x.id === currentPatId);
             const m = calculateAge(p.birth);
+            pool = exercises.filter(ex => parseInt(ex.age.split('-')[1]) <= (m + 1));
+        }
+
+        const filtered = pool.filter(ex => ex.name.toLowerCase().includes(query) || ex.collection.toLowerCase().includes(query));
+
+        list.innerHTML = filtered.map(ex => `
+            <div class="bg-white rounded-[40px] p-6 card-shadow border border-slate-50 flex flex-col h-full">
+                <div class="image-container mb-6">
+                    <img src="${ex.img || 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=600'}">
+                </div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="bg-purple-50 text-purple-600 px-4 py-1 rounded-full text-[10px] font-black uppercase">${ex.collection}</span>
+                    <span class="text-[10px] font-black text-slate-300 uppercase">${ex.age} m</span>
+                </div>
+                <h4 class="text-xl font-black text-slate-800 flex-1">${ex.name}</h4>
+                ${appMode === 'mae' ? `<button class="mt-4 w-full py-3 bg-green-500 text-white rounded-xl font-black text-xs uppercase">Concluir ✅</button>` : ''}
+            </div>
+        `).join('');
+    }
+
+    // --- PRESCRIÇÃO E MAPA ---
+    function initPresc() {
+        const container = document.getElementById('presc-patients-list');
+        container.innerHTML = patients.map(p => `
+            <button onclick="selectForPresc('${p.id}')" class="w-full p-4 text-left rounded-xl font-bold text-sm border-2 ${currentPatId === p.id ? 'border-indigo-600 bg-indigo-50' : 'border-transparent bg-slate-50'}">
+                ${p.name} (${calculateAge(p.birth)} meses)
+            </button>
+        `).join('');
+        renderPrescExercises();
+    }
+
+    function selectForPresc(id) {
+        currentPatId = id;
+        switchTab('prescriptions');
+        document.getElementById('map-container').classList.remove('hidden');
+        renderMap();
+        renderPrescExercises();
+    }
+
+    function renderMap() {
+        const p = patients.find(x => x.id === currentPatId);
+        const container = document.getElementById('body-map');
+        if(!p) return;
+        
+        container.innerHTML = axes.map(ax => {
+            const status = p.progress[ax] || 'Não Iniciado';
+            const color = status === 'Consolidado' ? 'bg-green-500' : (status === 'Em Progresso' ? 'bg-yellow-400' : 'bg-slate-200');
             return `
-                <div class="bg-white rounded-[32px] p-8 card-shadow border border-slate-50 flex flex-col items-center text-center animate-slide relative">
-                    <span class="absolute top-6 right-6 text-[10px] font-black bg-slate-100 text-slate-400 px-3 py-1 rounded-full">Nº ${p.number || '---'}</span>
-                    <div class="w-24 h-24 rounded-[32px] ${p.gender === 'Masculino' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-4xl mb-4 shadow-inner">
-                        ${p.gender === 'Masculino' ? '👦' : '👧'}
-                    </div>
-                    <h4 class="text-xl font-black text-slate-800 mb-1">${p.name}</h4>
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">${m} Meses • Faixa ${getAgeRange(m)}</span>
-                    <p class="text-xs font-bold text-slate-500 mb-6">${p.diag || 'Acompanhamento Geral'}</p>
-                    <div class="flex gap-2 w-full pt-4 border-t border-slate-50">
-                        <button onclick="editPat('${p.id}')" class="flex-1 py-3 bg-slate-50 rounded-xl font-black text-slate-400 hover:bg-slate-200">FICHA</button>
-                        <button onclick="deletePat('${p.id}')" class="px-4 py-3 text-slate-200 hover:text-red-500 bg-slate-50 rounded-xl">🗑️</button>
-                    </div>
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+                    <span class="text-[11px] font-black uppercase"><span class="status-dot ${color}"></span>${ax}</span>
+                    <select onchange="updateProgress('${ax}', this.value)" class="text-[10px] font-bold bg-white border-none rounded-md" ${appMode==='mae'?'disabled':''}>
+                        <option ${status==='Não Iniciado'?'selected':''}>Não Iniciado</option>
+                        <option ${status==='Em Progresso'?'selected':''}>Em Progresso</option>
+                        <option ${status==='Consolidado'?'selected':''}>Consolidado</option>
+                    </select>
                 </div>
             `;
         }).join('');
     }
 
-    function editPat(id) {
-        const p = patients.find(x => x.id === id);
-        Object.keys(p).forEach(k => { if(document.getElementById(`pat-${k}`)) document.getElementById(`pat-${k}`).value = p[k]; });
-        document.getElementById('patient-form-container').classList.remove('hidden');
-        window.scrollTo({top:0, behavior:'smooth'});
-    }
-
-    function deletePat(id) { if(confirm('Apagar paciente?')) { patients = patients.filter(p => p.id !== id); localStorage.setItem('fk_pro_pat_v7', JSON.stringify(patients)); renderPatients(); } }
-
-    // --- PRESCRIÇÃO DINÂMICA ---
-    function initPresc() {
-        filterPrescPatients();
-        renderPrescExercises();
-        updatePrescCount();
-    }
-
-    function filterPrescPatients() {
-        const query = document.getElementById('search-presc-pat').value.toLowerCase();
-        const container = document.getElementById('presc-patients-list');
-        const filtered = patients.filter(p => p.name.toLowerCase().includes(query));
-        
-        if(filtered.length === 0) {
-            container.innerHTML = `<p class="text-xs font-bold text-slate-400 text-center py-4">Nenhum paciente encontrado.</p>`;
-            return;
-        }
-
-        container.innerHTML = filtered.map(p => `
-            <button onclick="selectPrescPatient('${p.id}')" class="w-full p-4 text-left rounded-xl font-bold text-sm flex justify-between items-center transition-all border-2 ${currentPrescPatientId === p.id ? 'bg-indigo-600 text-white border-indigo-600 shadow-md scale-[1.02]' : 'bg-slate-50 text-slate-600 border-transparent hover:bg-indigo-50 hover:border-indigo-100'}">
-                <div class="flex items-center gap-3">
-                    <span>${p.gender === 'Masculino' ? '👦' : '👧'}</span>
-                    ${p.name}
-                </div>
-                <span class="text-[10px] opacity-70 uppercase tracking-wider">${calculateAge(p.birth)}m</span>
-            </button>
-        `).join('');
-    }
-
-    function selectPrescPatient(id) {
-        currentPrescPatientId = id;
-        const p = patients.find(x => x.id === id);
-        const range = getAgeRange(calculateAge(p.birth));
-        
-        const preview = document.getElementById('presc-selected-preview');
-        preview.classList.remove('hidden');
-        preview.innerHTML = `
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">
-                    ${p.gender === 'Masculino' ? '👦' : '👧'}
-                </div>
-                <div>
-                    <h5 class="font-black text-lg leading-tight">${p.name}</h5>
-                    <p class="text-[10px] font-black text-indigo-100 uppercase tracking-widest mt-1">Filtrando: ${range} meses</p>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('presc-filter-label').innerText = `Exercícios sugeridos para ${range} meses`;
-        filterPrescPatients(); 
-        renderPrescExercises();
+    function updateProgress(ax, val) {
+        const p = patients.find(x => x.id === currentPatId);
+        p.progress[ax] = val;
+        localStorage.setItem('fk_pro_pat_v9', JSON.stringify(patients));
+        renderMap();
     }
 
     function renderPrescExercises() {
-        const query = document.getElementById('search-presc-ex').value.toLowerCase();
         const grid = document.getElementById('presc-exercises-grid');
-        
-        let pool = exercises;
-        if(currentPrescPatientId) {
-            const p = patients.find(x => x.id === currentPrescPatientId);
-            pool = exercises.filter(ex => ex.age === getAgeRange(calculateAge(p.birth)));
-        }
-
-        const filtered = pool.filter(ex => ex.name.toLowerCase().includes(query) || ex.collection.toLowerCase().includes(query));
-
-        if(filtered.length === 0) {
-            grid.innerHTML = `<p class="text-sm font-bold text-slate-400 col-span-2 text-center py-10">Nenhum exercício encontrado para este filtro.</p>`;
+        if(!currentPatId) {
+            grid.innerHTML = "<p class='text-center text-slate-400 font-bold py-10'>Selecione um paciente para ver exercícios sugeridos.</p>";
             return;
         }
+        
+        const p = patients.find(x => x.id === currentPatId);
+        const m = calculateAge(p.birth);
+        const pool = exercises.filter(ex => ex.age === getRange(m));
 
-        grid.innerHTML = filtered.map(ex => `
-            <div onclick="togglePrescEx('${ex.id}')" class="p-4 rounded-3xl border-2 transition-all cursor-pointer flex items-center gap-4 ${selectedExIds.has(ex.id) ? 'border-indigo-500 bg-indigo-50 shadow-md scale-[1.02]' : 'border-slate-100 bg-white hover:border-slate-300'}">
-                <div class="w-16 h-16 rounded-2xl bg-slate-200 bg-cover bg-center shrink-0" style="background-image: url('${ex.img || ''}')"></div>
+        grid.innerHTML = pool.map(ex => `
+            <div onclick="togglePrescEx('${ex.id}')" class="p-4 rounded-3xl border-2 cursor-pointer flex items-center gap-4 ${selectedExIds.has(ex.id) ? 'border-indigo-50 bg-indigo-50' : 'border-slate-50 bg-white'}">
+                <div class="w-12 h-12 rounded-xl bg-slate-200 bg-cover bg-center" style="background-image: url('${ex.img}')"></div>
                 <div class="flex-1">
-                    <h6 class="font-bold text-slate-800 text-sm leading-tight">${ex.name}</h6>
-                    <p class="text-[9px] text-slate-400 font-black uppercase tracking-tighter mt-1">${ex.collection} • ${ex.time||0} min</p>
+                    <h6 class="font-bold text-sm">${ex.name}</h6>
+                    <p class="text-[9px] text-slate-400 font-black uppercase">${ex.collection}</p>
                 </div>
-                <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm ${selectedExIds.has(ex.id) ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 text-transparent'}">
-                    ✓
-                </div>
+                <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs ${selectedExIds.has(ex.id) ? 'bg-indigo-600 text-white border-indigo-600' : 'border-slate-200 text-transparent'}">✓</div>
             </div>
         `).join('');
+        document.getElementById('presc-count').innerText = `${selectedExIds.size} SELECIONADOS`;
     }
 
     function togglePrescEx(id) {
         if(selectedExIds.has(id)) selectedExIds.delete(id); else selectedExIds.add(id);
         renderPrescExercises();
-        updatePrescCount();
     }
 
-    function updatePrescCount() {
-        document.getElementById('presc-count').innerText = `${selectedExIds.size} SELECIONADOS`;
-    }
-
-    // --- NOVO MOTOR DE PDF PREMIUM (MAGAZINE STYLE) ---
+    // --- PDF ENGINE ---
     async function getBase64(url) {
+        if(!url) return null;
         return new Promise((resolve) => {
             const img = new Image();
             img.setAttribute("crossOrigin", "anonymous");
@@ -468,11 +389,7 @@
                 canvas.width = img.width; canvas.height = img.height;
                 const ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0);
-                resolve({ 
-                    b64: canvas.toDataURL("image/jpeg", 0.8), 
-                    w: img.width, 
-                    h: img.height 
-                });
+                resolve(canvas.toDataURL("image/jpeg", 0.7));
             };
             img.onerror = () => resolve(null);
             img.src = url;
@@ -480,172 +397,48 @@
     }
 
     async function generateSuperPDF() {
-        if(!currentPrescPatientId || selectedExIds.size === 0) return alert('Selecione um paciente e pelo menos um exercício!');
+        if(!currentPatId || selectedExIds.size === 0) return alert('Selecione um paciente e os exercícios do plano!');
         
-        showToast('🚀 Gerando Prontuário Inteligente...');
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        const p = patients.find(x => x.id === currentPrescPatientId);
-
-        // FUNÇÃO DE RODAPÉ
-        const addFooter = (doc, pageNum) => {
-            doc.setFontSize(8);
-            doc.setTextColor(180, 180, 180);
-            doc.setFont("helvetica", "normal");
-            doc.text(`Fisio Kids PRO - Dra. Eulália Angelim | Prontuário Gerado Eletronicamente`, 105, 285, { align: 'center' });
-            doc.text(`Página ${pageNum}`, 105, 290, { align: 'center' });
-        };
-
-        // ==========================================
-        // PÁGINA 1: CAPA DO PRONTUÁRIO
-        // ==========================================
-        let currentPage = 1;
-        doc.setFillColor(79, 70, 229); // Indigo-600
-        doc.rect(0, 0, 210, 297, 'F');
-        
-        doc.setTextColor(255, 255, 255);
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(36);
-        doc.text("PLANO DE", 105, 70, { align: 'center' });
-        doc.text("CUIDADOS", 105, 85, { align: 'center' });
-        
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
-        doc.text("FISIOTERAPIA NEUROFUNCIONAL INFANTIL", 105, 100, { align: 'center' });
-        doc.text("Dra. Eulália Angelim", 105, 108, { align: 'center' });
-
-        // Caixa Branca com Dados do Paciente
-        doc.setFillColor(255, 255, 255);
-        doc.roundedRect(20, 130, 170, 100, 5, 5, 'F');
-        
-        doc.setTextColor(30, 41, 59);
-        doc.setFontSize(22);
-        doc.setFont("helvetica", "bold");
-        doc.text(p.name, 30, 150);
-        
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "bold");
-        doc.setTextColor(71, 85, 105);
-        doc.text(`Nº DE REGISTRO: ${p.number || 'N/A'}`, 30, 165);
-        
-        doc.setFont("helvetica", "normal");
-        doc.text(`Idade Mapeada: ${calculateAge(p.birth)} meses`, 30, 175);
-        doc.text(`Responsável: ${p.parent}`, 30, 185);
-        doc.text(`Diagnóstico/Foco: ${p.diag || 'Acompanhamento Motor'}`, 30, 195);
-        doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 30, 205);
-
-        const obs = document.getElementById('presc-obs').value;
-        if(obs) {
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "italic");
-            doc.setTextColor(100, 116, 139);
-            const obsLines = doc.splitTextToSize(`Nota da Fisio: ${obs}`, 150);
-            doc.text(obsLines, 30, 220);
-        }
-
-        // ==========================================
-        // PÁGINAS SEGUINTES: EXERCÍCIOS COM FLUXO CONTÍNUO
-        // ==========================================
+        const p = patients.find(x => x.id === currentPatId);
         const selectedList = exercises.filter(ex => selectedExIds.has(ex.id));
-        let y = 300; // Força uma nova página no primeiro item do loop
 
-        for(let i=0; i < selectedList.length; i++) {
-            const ex = selectedList[i];
+        // Capa
+        doc.setFillColor(99, 102, 241); doc.rect(0, 0, 210, 297, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(30); doc.text("GUIA DE ESTIMULAÇÃO", 105, 100, {align:'center'});
+        doc.setFontSize(22); doc.text(p.name.toUpperCase(), 105, 120, {align:'center'});
+        doc.setFontSize(10); doc.text("Dra. Eulália Angelim - Fisioterapia Neurofuncional Pediátrica", 105, 280, {align:'center'});
+
+        for(let ex of selectedList) {
+            doc.addPage();
+            doc.setTextColor(99, 102, 241); doc.setFontSize(20); doc.text(ex.name, 15, 25);
+            doc.setFontSize(10); doc.setTextColor(150); doc.text(`Eixo: ${ex.collection} | Faixa: ${ex.age} meses`, 15, 32);
             
-            // Verifica se precisa de nova página para começar o exercício
-            if (y > 230) {
-                doc.addPage();
-                currentPage++;
-                addFooter(doc, currentPage);
-                y = 20;
-            } else {
-                y += 15; // Espaço entre um exercício e outro se ficarem na mesma folha
-                doc.setDrawColor(226, 232, 240);
-                doc.line(15, y-8, 195, y-8); // Linha separadora
+            let y = 40;
+            const b64 = await getBase64(ex.img);
+            if(b64) { 
+                doc.addImage(b64, 'JPEG', 15, y, 180, 100); 
+                y += 110; 
             }
 
-            // IMAGEM (Ajustada para o fluxo contínuo)
-            if (ex.img) {
-                const imgData = await getBase64(ex.img);
-                if (imgData && imgData.b64) {
-                    // Mantém largura de 180mm (com margens)
-                    let imgH = (180 * imgData.h) / imgData.w;
-                    if (imgH > 100) imgH = 100; // Altura máxima para não engolir a página
-                    
-                    // Se a imagem não couber na página atual, quebra a página
-                    if (y + imgH > 260) {
-                        doc.addPage();
-                        currentPage++;
-                        addFooter(doc, currentPage);
-                        y = 20;
-                    }
-
-                    try {
-                        doc.addImage(imgData.b64, 'JPEG', 15, y, 180, imgH);
-                        y += imgH + 10;
-                    } catch(e) {}
-                }
-            }
-
-            // TÍTULO DO EXERCÍCIO
-            doc.setTextColor(79, 70, 229);
-            doc.setFontSize(20);
-            doc.setFont("helvetica", "bold");
-            const titleLines = doc.splitTextToSize(`${i + 1}. ${ex.name.toUpperCase()}`, 180);
+            doc.setFillColor(168, 85, 247); doc.roundedRect(15, y, 180, 10, 2, 2, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(9);
+            doc.text(`Objetivo: ${ex.time||'-'} min | Reps: ${ex.reps||'-'} | Séries: ${ex.series||'-'}`, 20, y + 7);
             
-            // Checa quebra de página para o título
-            if (y + (titleLines.length * 8) > 270) {
-                doc.addPage(); currentPage++; addFooter(doc, currentPage); y = 20;
-            }
-            
-            doc.text(titleLines, 15, y);
-            y += (titleLines.length * 8) + 2;
-
-            // BARRA ROXA COM METADADOS
-            if (y + 12 > 270) { doc.addPage(); currentPage++; addFooter(doc, currentPage); y = 20; }
-            doc.setFillColor(168, 85, 247); // Purple
-            doc.roundedRect(15, y, 180, 10, 2, 2, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(9);
-            doc.setFont("helvetica", "bold");
-            doc.text(`Foco: ${ex.collection}   |   Tempo: ${ex.time||'-'} min   |   Reps: ${ex.reps||'-'}   |   Séries: ${ex.series||'-'}`, 20, y + 7);
-
-            y += 18;
-
-            // INSTRUÇÕES DETALHADAS (Com Auto-Page Break linha por linha)
-            doc.setTextColor(51, 65, 85);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            
-            if (y > 270) { doc.addPage(); currentPage++; addFooter(doc, currentPage); y = 20; }
-            doc.text("Como realizar o estímulo:", 15, y);
-            y += 8;
-            
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(71, 85, 105);
-            const descLines = doc.splitTextToSize(ex.desc, 180);
-            
-            // Escreve linha a linha para respeitar o limite inferior da folha
-            for(let j = 0; j < descLines.length; j++) {
-                if (y > 275) {
-                    doc.addPage();
-                    currentPage++;
-                    addFooter(doc, currentPage);
-                    y = 20;
-                }
-                doc.text(descLines[j], 15, y);
-                y += 6;
-            }
+            y += 20;
+            doc.setTextColor(50); doc.setFontSize(12); doc.text("Como Realizar:", 15, y);
+            doc.setFontSize(10);
+            const lines = doc.splitTextToSize(ex.desc, 180);
+            doc.text(lines, 15, y + 8);
         }
 
-        doc.save(`Plano_${p.number ? p.number+'_' : ''}${p.name.replace(/\s+/g, '_')}.pdf`);
-        showToast('✅ Prontuário Premium Gerado!');
+        doc.save(`FisioKids_Guia_${p.name}.pdf`);
     }
 
-    // --- INIT ---
-    renderExercises();
     renderPatients();
+    renderExercises();
 </script>
 
 </body>
